@@ -10,7 +10,6 @@
     # Other general flags if available can be set here.
   };
   programs.localsend.enable = true;
-  programs.gamemode.enable = true;
   users.defaultUserShell = pkgs.zsh; # Example: zsh, fish, nushell
   environment.shells = [ pkgs.zsh ];
   environment.systemPackages = with pkgs; [
