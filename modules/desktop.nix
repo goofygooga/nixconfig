@@ -12,7 +12,7 @@
   services.desktopManager.plasma6.enable = true;
   #programs.ssh.askPassword = lib.mkDefault "...";
   #programs.ssh.askPassword = lib.mkForce "${pkgs.ksshaskpass}/bin/ksshaskpass";
-  programs.seahorse.enable = false;
+#  programs.seahorse.enable = false;
 #  services.displayManager.gdm.enable = true;
 #  services.desktopManager.gnome.enable = true;
   services.xserver.videoDrivers = [ "nvidia" ];

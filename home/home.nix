@@ -11,7 +11,6 @@
 
   home.username = "lordofchaos";
   home.homeDirectory = "/home/lordofchaos";
-
   # This value determines the Home Manager release that your configuration is
   # compatible with. This helps avoid breakage when a new Home Manager release
   # introduces backwards incompatible changes.
@@ -27,6 +26,7 @@
     pkgs.prismlauncher
     pkgs.git-credential-manager
     pkgs.git
+    pkgs.vlc
   ];
   programs.git = {
   enable = true;
