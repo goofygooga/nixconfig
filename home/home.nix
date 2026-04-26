@@ -31,7 +31,7 @@
   programs.git = {
   enable = true;
   settings = {
-    credential.helper = "manager";
+    credential.helper = "secretservice";
   };
 };
   # Home Manager is adept at managing dotfiles. The primary way to manage
