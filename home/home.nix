@@ -29,6 +29,8 @@
     pkgs.vlc
   ];
   programs.git = {
+  userName = "Scorcher";
+  userEmail = "harrypotterr1233@gmail.com";
   enable = true;
   settings = {
     credential.helper = "manager";
