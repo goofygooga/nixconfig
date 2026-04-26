@@ -32,6 +32,7 @@
   enable = true;
   settings = {
     credential.helper = "manager";
+    credential.credentialStore = "cache";
   };
 };
   # Home Manager is adept at managing dotfiles. The primary way to manage
