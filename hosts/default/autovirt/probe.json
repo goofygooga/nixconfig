@@ -1,0 +1,26 @@
+{
+  "cpu": "intel",
+  "acpi": {
+    "oem_id": "ACRSYS",
+    "oem_table_id": "ACRPRDCT",
+    "oem_table_id_hex": "0x5443445250524341",
+    "oem_revision": "0x01072009",
+    "creator_id": "AMI ",
+    "creator_id_hex": "0x20494d41",
+    "creator_revision": "0x01000013",
+    "pm_profile": 1
+  },
+  "bios": {
+    "vendor": "American Megatrends Inc.",
+    "version": "R01-A4",
+    "date": "01/20/2022",
+    "revision": "0x00010000"
+  },
+  "smbios": {
+    "processor_manufacturer": "Intel"
+  },
+  "battery": {
+    "present": false,
+    "ssdt_path": ""
+  }
+}
