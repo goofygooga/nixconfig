@@ -19,7 +19,8 @@
     ../../modules/virtualization.nix
     ./autovirt/passthrough.nix
   ];
-  zramSwap.enable = true;
+  zramSwap.enable = false;
+  services.scx.enable = true;
   programs.appimage.enable = true;
   programs.appimage.binfmt = true;
   nix.gc = {
@@ -52,7 +53,7 @@
   };
 
   # Enable CUPS to print documents.
-  services.printing.enable = true;
+  services.printing.enable = false;
   hardware.alsa.enablePersistence = true;
   services.pulseaudio.enable = false;
   security.rtkit.enable = true;

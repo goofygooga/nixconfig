@@ -42,7 +42,7 @@
   home.file = {
     # ".screenrc".source = dotfiles/screenrc;
   };
-
+  xdg.configFile."niri/config.kdl".source = ./niri/config.kdl;
   # You can also manage environment variables.
   home.sessionVariables = {
     EDITOR = "nvim";

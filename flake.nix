@@ -9,10 +9,6 @@
     };
     nixos-facter-modules.url = "github:numtide/nixos-facter-modules";
     nix-cachyos-kernel.url = "github:xddxdd/nix-cachyos-kernel/release";
-    lanzaboote = {
-      url = "github:nix-community/lanzaboote/v1.0.0";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
     home-manager.url = "github:nix-community/home-manager";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
 chaotic.url = "github:chaotic-cx/nyx/nyxpkgs-unstable";
@@ -66,10 +62,6 @@ grub2-themes.nixosModules.default
                 pkgs.hello
               ];
               boot.loader.systemd-boot.enable = false;
-              boot.lanzaboote = {
-                enable = false;
-                pkiBundle = "/var/lib/sbctl";
-              };
             }
           )
         ];

@@ -28,20 +28,12 @@ users.users.lordofchaos = { extraGroups = [ "openrazer"]; };
     bibata-cursors
     wget
     nerd-fonts.jetbrains-mono
-    wine
-    winetricks
     alacritty
     timeshift
     ddcutil
     python3
-    go
-    ninja
-    gnumake
-    gcc
     vscode-fhs
     vscodium-fhs
-    rbenv
-    ruby
     piper
     javaPackages.compiler.openjdk25
     psmisc
