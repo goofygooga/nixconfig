@@ -4,7 +4,7 @@
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
     barely-metal = {
-      url = "github:Dreaming-Codes/BarelyMetal";
+      url = "github:goofygooga/BarelyMetal";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     nixos-facter-modules.url = "github:numtide/nixos-facter-modules";
@@ -15,7 +15,14 @@
     };
     home-manager.url = "github:nix-community/home-manager";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
-
+chaotic.url = "github:chaotic-cx/nyx/nyxpkgs-unstable";
+    noctalia = {
+      url = "github:noctalia-dev/noctalia/legacy-v4";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+grub2-themes = {
+      url = "github:vinceliuice/grub2-themes";
+    };
   };
 
   outputs =
@@ -27,6 +34,8 @@
       nixos-facter-modules,
       lanzaboote,
       home-manager,
+chaotic,
+grub2-themes,
       ...
     }:
     {
@@ -38,9 +47,11 @@
           barely-metal.nixosModules.default
           nixos-facter-modules.nixosModules.facter
           home-manager.nixosModules.home-manager
+chaotic.homeModules.default
+grub2-themes.nixosModules.default
           ./modules/boot.nix
           ./hosts/default/configuration.nix
-
+./modules/noctalia.nix
           {
             home-manager.useGlobalPkgs = true;
             home-manager.useUserPackages = true;
@@ -54,9 +65,9 @@
               environment.systemPackages = [
                 pkgs.hello
               ];
-              boot.loader.systemd-boot.enable = lib.mkForce false;
+              boot.loader.systemd-boot.enable = false;
               boot.lanzaboote = {
-                enable = true;
+                enable = false;
                 pkiBundle = "/var/lib/sbctl";
               };
             }

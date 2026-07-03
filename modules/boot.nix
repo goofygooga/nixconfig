@@ -5,7 +5,19 @@
   ...
 }:
 {
-  boot.kernelPackages = pkgs.linuxPackages_latest;
+ boot.loader.grub = {
+enable = true;
+device = "nodev";
+efiSupport = true;
+configurationLimit = 5;
+ }; 
+boot.loader.grub2-theme = {
+    enable = true;
+    theme = "whitesur";
+    footer = true;
+    customResolution = "1920x1080";  # Optional: Set a custom resolution
+  };
+  boot.kernelPackages = pkgs.cachyosKernels.linuxPackages-cachyos-latest-x86_64-v4;
   boot.loader.systemd-boot.consoleMode = "max";
   boot.kernelModules = [
     "vfio_virqfd"

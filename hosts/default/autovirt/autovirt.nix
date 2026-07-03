@@ -23,7 +23,7 @@
       # Laptop spoofing (fake ACPI battery + embedded controller/fan/power button)
       # useFakeBattery = true;
       # useSpoofedDevices = true;
-
+      isoPath = /home/lordofchaos/Downloads/Win11_25H2_English_x64_v2.iso;
       # Windows ISO for initial install
       # isoPath = /path/to/Win11.iso;
 

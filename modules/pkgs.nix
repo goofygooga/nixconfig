@@ -9,6 +9,8 @@
     dedicatedServer.openFirewall = true; # Open ports for Source Dedicated Server hosting
     # Other general flags if available can be set here.
   };
+users.users.lordofchaos = { extraGroups = [ "openrazer"]; };
+ hardware.openrazer.enable = true;
   programs.localsend.enable = true;
   users.defaultUserShell = pkgs.zsh; # Example: zsh, fish, nushell
   environment.shells = [ pkgs.zsh ];
@@ -45,9 +47,16 @@
     psmisc
     kmod
     gnome-keyring
-  libsecret
-  ];
+  libsecret  
+polychromatic
+openrazer-daemon
+quickshell
+noctalia-qs
+nautilus
+];
   programs.gamemode.enable = true;
+  programs.niri.enable = true;
+  
   programs.zsh = {
     enable = true;
 
