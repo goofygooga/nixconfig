@@ -30,6 +30,12 @@ programs.vscode = {
     yzhang.markdown-all-in-one
   ];
 };
+programs.neovim.enable = true;
+programs.neovim = {
+viAlias = true;
+  vimAlias = true;};
+  programs.neovim.plugins = [
+  pkgs.vimPlugins.LazyVim ];
   programs.git = {
     enable = true;
     userName = "Scorcher";
@@ -40,7 +46,6 @@ programs.vscode = {
       credential.credentialStore = "cache";
     };
   };
-
   programs.fastfetch = {
     enable = true;
 
@@ -154,7 +159,7 @@ programs.vscode = {
   };
 
   home.sessionVariables = {
-    EDITOR = "nvim";
+    EDITOR = "nano";
   };
 
   programs.home-manager.enable = true;

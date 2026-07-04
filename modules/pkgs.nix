@@ -46,6 +46,8 @@
     noctalia-qs
     nautilus
     alacritty_git
+    xwayland-satellite
+    nvibrant
   ];
   programs.gamemode.enable = true;
   programs.niri.enable = true;

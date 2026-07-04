@@ -19,10 +19,7 @@
     grub2-themes = {
       url = "github:vinceliuice/grub2-themes";
     };
-    vfio-stealth = {
-  url = "github:Daaboulex/vfio-stealth-nix";
-  inputs.nixpkgs.follows = "nixpkgs";
-};
+
   };
 
   outputs =
@@ -53,7 +50,7 @@
           {
             home-manager.useGlobalPkgs = true;
             home-manager.useUserPackages = true;
-            home-manager.users.lordofchaos = import ./home/home.nix;
+            home-manager.users.lordofchaos = import ./hosts/default/home/home.nix;
           }
 
           (

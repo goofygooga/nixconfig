@@ -38,6 +38,9 @@ done
 
       ${pkgs.libvirt}/bin/virsh nodedev-detach pci_0000_01_00_0
       ${pkgs.libvirt}/bin/virsh nodedev-detach pci_0000_01_00_1
+      ${pkgs.libvirt}/bin/virsh nodedev-detach pci_0000_00_1f_0
+${pkgs.libvirt}/bin/virsh nodedev-detach pci_0000_00_1f_5
+${pkgs.libvirt}/bin/virsh nodedev-detach pci_0000_00_1f_4
       ${pkgs.kmod}/bin/modprobe vfio-pci
     fi
 
@@ -47,6 +50,11 @@ done
 
       ${pkgs.libvirt}/bin/virsh nodedev-reattach pci_0000_01_00_1
       ${pkgs.libvirt}/bin/virsh nodedev-reattach pci_0000_01_00_0
+${pkgs.libvirt}/bin/virsh nodedev-reattach pci_0000_00_1f_0
+${pkgs.libvirt}/bin/virsh nodedev-reattach pci_0000_00_1f_5
+${pkgs.libvirt}/bin/virsh nodedev-reattach pci_0000_00_1f_4
+
+
       ${pkgs.kmod}/bin/modprobe -r vfio-pci
       for gov in /sys/devices/system/cpu/cpu*/cpufreq/scaling_governor; do
   echo schedutil > "$gov"

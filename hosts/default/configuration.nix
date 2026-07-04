@@ -15,17 +15,29 @@
     ./hardware-configuration.nix
     ../../modules/desktop.nix
     ../../modules/pkgs.nix
-    ./autovirt/autovirt.nix
-    ../../modules/virtualization.nix
-    ./autovirt/passthrough.nix
-    inputs.vfio-stealth.nixosModules.default
+    ./virtualization/virtualization.nix
+
   ];
-  nixpkgs.overlays = [ inputs.vfio-stealth.overlays.default ];
-  myModules.vfio.stealth.enable = true;
   zramSwap.enable = false;
   services.scx.enable = true;
   programs.appimage.enable = true;
   programs.appimage.binfmt = true;
+   xdg.portal = {
+    enable = true;
+    #xdgOpenUsePortal = true;
+    config = {
+      common = {
+        default = [
+          "gnome"
+        ];
+      };
+    };
+    extraPortals = with pkgs; [
+      xdg-desktop-portal-gnome
+      xdg-desktop-portal-gtk
+    ];
+  };
+
   nix.gc = {
     automatic = true;
     dates = "weekly";
@@ -101,7 +113,7 @@
   # $ nix search wget
 
   services.openssh.enable = true;
-  networking.firewall.enable = false;
+  networking.firewall.enable = true;
   system.stateVersion = "26.05";
 
 }
