@@ -21,6 +21,7 @@
     git-credential-manager
     git
     vlc
+    tree
   ];
 programs.vscode = {
   enable = true;
@@ -157,8 +158,15 @@ viAlias = true;
     # ".screenrc".source = ./dotfiles/screenrc;
     # ".config/niri/config.kdl".source = ./niri/config.kdl;
   };
-
-  home.sessionVariables = {
+xdg.configFile."niri" = {
+  source = ./dotfiles/niri;
+  recursive = true;
+};
+xdg.configFile."noctalia" = {
+  source = ./dotfiles/noctalia;
+  recursive = true;
+};  
+home.sessionVariables = {
     EDITOR = "nano";
   };
 
