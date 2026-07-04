@@ -17,7 +17,7 @@ boot.loader.grub2-theme = {
     footer = true;
     customResolution = "1920x1080";  # Optional: Set a custom resolution
   };
-  boot.kernelPackages = pkgs.cachyosKernels.linuxPackages-cachyos-latest-x86_64-v4;
+  boot.kernelPackages = pkgs.linuxPackages_latest;
   boot.loader.systemd-boot.consoleMode = "max";
   boot.kernelModules = [
     "vfio_virqfd"
@@ -36,6 +36,8 @@ boot.loader.grub2-theme = {
     "nvme_load=YES"
     "nvidia-drm.modeset=1"
     "nouveau.modeset=0"
+    "mitigations=off"
+    "transparent_hugepage=always"
   ];
   boot.loader.systemd-boot.configurationLimit = 4;
   boot.loader.efi.canTouchEfiVariables = true;

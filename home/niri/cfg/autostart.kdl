@@ -1,5 +1,0 @@
-// ────────────── Startup Applications ──────────────
-// https://github.com/YaLTeR/niri/wiki/Configuration:-Miscellaneous#spawn-sh-at-startup
-
-    spawn-sh-at-startup "/nix/store/ga3whkn6anxd643nxbra30phw99mrnil-polkit-kde-agent-1-6.7.1/libexec/polkit-kde-authentication-agent-1 &" // Polkit
-    spawn-at-startup "noctalia-shell"

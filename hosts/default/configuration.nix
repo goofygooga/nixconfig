@@ -18,7 +18,10 @@
     ./autovirt/autovirt.nix
     ../../modules/virtualization.nix
     ./autovirt/passthrough.nix
+    inputs.vfio-stealth.nixosModules.default
   ];
+  nixpkgs.overlays = [ inputs.vfio-stealth.overlays.default ];
+  myModules.vfio.stealth.enable = true;
   zramSwap.enable = false;
   services.scx.enable = true;
   programs.appimage.enable = true;

@@ -11,14 +11,18 @@
     nix-cachyos-kernel.url = "github:xddxdd/nix-cachyos-kernel/release";
     home-manager.url = "github:nix-community/home-manager";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
-chaotic.url = "github:chaotic-cx/nyx/nyxpkgs-unstable";
+    chaotic.url = "github:chaotic-cx/nyx/nyxpkgs-unstable";
     noctalia = {
       url = "github:noctalia-dev/noctalia/legacy-v4";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-grub2-themes = {
+    grub2-themes = {
       url = "github:vinceliuice/grub2-themes";
     };
+    vfio-stealth = {
+  url = "github:Daaboulex/vfio-stealth-nix";
+  inputs.nixpkgs.follows = "nixpkgs";
+};
   };
 
   outputs =
@@ -28,10 +32,9 @@ grub2-themes = {
       nix-cachyos-kernel,
       barely-metal,
       nixos-facter-modules,
-      lanzaboote,
       home-manager,
-chaotic,
-grub2-themes,
+      chaotic,
+      grub2-themes,
       ...
     }:
     {
@@ -39,15 +42,14 @@ grub2-themes,
         specialArgs = { inherit inputs; };
         system = "x86_64-linux";
         modules = [
-          lanzaboote.nixosModules.lanzaboote
           barely-metal.nixosModules.default
           nixos-facter-modules.nixosModules.facter
           home-manager.nixosModules.home-manager
-chaotic.homeModules.default
-grub2-themes.nixosModules.default
+          chaotic.homeModules.default
+          grub2-themes.nixosModules.default
           ./modules/boot.nix
           ./hosts/default/configuration.nix
-./modules/noctalia.nix
+          ./modules/noctalia.nix
           {
             home-manager.useGlobalPkgs = true;
             home-manager.useUserPackages = true;

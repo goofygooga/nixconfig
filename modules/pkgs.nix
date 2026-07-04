@@ -9,8 +9,10 @@
     dedicatedServer.openFirewall = true; # Open ports for Source Dedicated Server hosting
     # Other general flags if available can be set here.
   };
-users.users.lordofchaos = { extraGroups = [ "openrazer"]; };
- hardware.openrazer.enable = true;
+  users.users.lordofchaos = {
+    extraGroups = [ "openrazer" ];
+  };
+  hardware.openrazer.enable = true;
   programs.localsend.enable = true;
   users.defaultUserShell = pkgs.zsh; # Example: zsh, fish, nushell
   environment.shells = [ pkgs.zsh ];
@@ -32,23 +34,38 @@ users.users.lordofchaos = { extraGroups = [ "openrazer"]; };
     timeshift
     ddcutil
     python3
-    vscode-fhs
-    vscodium-fhs
+    vscode
+    (vscode-with-extensions.override {
+    vscodeExtensions = with vscode-extensions; [
+      bbenoist.nix
+      ms-python.python
+      ms-azuretools.vscode-docker
+      ms-vscode-remote.remote-ssh
+    ] ++ pkgs.vscode-utils.extensionsFromVscodeMarketplace [
+      {
+        name = "remote-ssh-edit";
+        publisher = "ms-vscode-remote";
+        version = "0.47.2";
+        sha256 = "1hp6gjh4xp2m1xlm1jsdzxw9d8frkiidhph6nvl24d0h8z34w49g";
+      }
+    ];
+  })
     piper
+    reaper
     javaPackages.compiler.openjdk25
     psmisc
     kmod
     gnome-keyring
-  libsecret  
-polychromatic
-openrazer-daemon
-quickshell
-noctalia-qs
-nautilus
-];
+    libsecret
+    polychromatic
+    openrazer-daemon
+    quickshell
+    noctalia-qs
+    nautilus
+  ];
   programs.gamemode.enable = true;
   programs.niri.enable = true;
-  
+
   programs.zsh = {
     enable = true;
 
