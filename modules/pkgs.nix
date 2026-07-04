@@ -13,6 +13,7 @@
     extraGroups = [ "openrazer" ];
   };
   hardware.openrazer.enable = true;
+
   programs.localsend.enable = true;
   users.defaultUserShell = pkgs.zsh; # Example: zsh, fish, nushell
   environment.shells = [ pkgs.zsh ];
@@ -21,7 +22,6 @@
     #  wget
     alsa-utils
     sbctl
-    google-chrome
     #heroic
     efibootmgr
     usbutils
@@ -30,26 +30,9 @@
     bibata-cursors
     wget
     nerd-fonts.jetbrains-mono
-    alacritty
     timeshift
     ddcutil
     python3
-    vscode
-    (vscode-with-extensions.override {
-    vscodeExtensions = with vscode-extensions; [
-      bbenoist.nix
-      ms-python.python
-      ms-azuretools.vscode-docker
-      ms-vscode-remote.remote-ssh
-    ] ++ pkgs.vscode-utils.extensionsFromVscodeMarketplace [
-      {
-        name = "remote-ssh-edit";
-        publisher = "ms-vscode-remote";
-        version = "0.47.2";
-        sha256 = "1hp6gjh4xp2m1xlm1jsdzxw9d8frkiidhph6nvl24d0h8z34w49g";
-      }
-    ];
-  })
     piper
     reaper
     javaPackages.compiler.openjdk25
@@ -62,6 +45,7 @@
     quickshell
     noctalia-qs
     nautilus
+    alacritty_git
   ];
   programs.gamemode.enable = true;
   programs.niri.enable = true;
