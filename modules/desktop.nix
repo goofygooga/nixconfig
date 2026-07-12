@@ -5,10 +5,16 @@
   ...
 }:
 {
+  imports = [inputs.silentSDDM.nixosModules.default];
+    programs.silentSDDM = {
+        enable = true;
+        theme = "rei";
+        # settings = { ... }; see example in module
+    };
   networking.networkmanager.enable = true;
   services.xserver.enable = true;
   services.displayManager.sddm.enable = true;
-  services.desktopManager.plasma6.enable = true;
+ # services.desktopManager.plasma6.enable = true;
   services.xserver.windowManager.dwm.enable = true;
   services.xserver.windowManager.dwm.package = pkgs.dwm.overrideAttrs (oldAttrs: rec {
     patches = [
