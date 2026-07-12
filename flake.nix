@@ -19,7 +19,10 @@
     grub2-themes = {
       url = "github:vinceliuice/grub2-themes";
     };
-
+silentSDDM = {
+      url = "github:uiriansan/SilentSDDM";
+      inputs.nixpkgs.follows = "nixpkgs";
+   };
   };
 
   outputs =
