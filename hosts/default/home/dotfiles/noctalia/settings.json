@@ -674,7 +674,7 @@
     },
     "wallpaper": {
         "automationEnabled": false,
-        "directory": "/home/lordofchaos/Pictures/scott pic",
+        "directory": "/home/lordofchaos/Pictures",
         "enableMultiMonitorDirectories": false,
         "enabled": true,
         "favorites": [

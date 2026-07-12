@@ -18,7 +18,47 @@
     ./virtualization/virtualization.nix
 
   ];
+  swapDevices = [
+  {
+    device = "/var/lib/swapfile";
+    size = 8 * 1024; # Size in mebibytes (16 GiB)
+  }
+];
   zramSwap.enable = false;
+  programs.nix-ld.enable = true;
+  programs.nix-ld.libraries = with pkgs; [
+    glibc
+ stdenv.cc.cc
+
+    # C/C++ runtime
+    glibc
+    gcc-unwrapped.lib
+
+    # Common compression
+    zlib
+    xz
+    zstd
+
+    # SSL
+    openssl
+
+    # Terminal/UI
+    ncurses
+
+    # C++ ABI
+    libgcc
+xorg.libX11
+  xorg.libXext
+  xorg.libXrandr
+  xorg.libXcursor
+  xorg.libXi
+  xorg.libXrender
+  xorg.libXfixes
+  xorg.libxcb
+  wayland
+  libGL
+  vulkan-loader
+  ];
   services.scx.enable = true;
   programs.appimage.enable = true;
   programs.appimage.binfmt = true;
@@ -79,6 +119,7 @@
     pulse.enable = true;
 
   };
+  services.power-profiles-daemon.enable = true;
   nixpkgs.config.allowUnfree = true;
   # users.users.lordofchaos.group = "lordofchaos";
   #users.groups.lordofchaos = {};
@@ -100,12 +141,15 @@
     ];
     packages = with pkgs; [
       kdePackages.kate
+      kdePackages.dolphin
     ];
   };
 
   # Install firefox.
   programs.firefox.enable = true;
-
+  programs.firefox.package = pkgs.firefox-bin;
+  programs.gamescope.enable = true;
+programs.gamemode.enable = true;
   # Allow unfree packages
   #  nixpkgs.config.allowUnfree = true;
 

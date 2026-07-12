@@ -2,19 +2,20 @@
   config,
   pkgs,
   lib,
+  inputs,
   ...
 }:
 {
   imports = [inputs.silentSDDM.nixosModules.default];
     programs.silentSDDM = {
         enable = true;
-        theme = "rei";
+        theme = "default";
         # settings = { ... }; see example in module
     };
   networking.networkmanager.enable = true;
   services.xserver.enable = true;
   services.displayManager.sddm.enable = true;
- # services.desktopManager.plasma6.enable = true;
+  services.desktopManager.plasma6.enable = true;
   services.xserver.windowManager.dwm.enable = true;
   services.xserver.windowManager.dwm.package = pkgs.dwm.overrideAttrs (oldAttrs: rec {
     patches = [
@@ -38,11 +39,13 @@
   #  services.displayManager.gdm.enable = true;
   #  services.desktopManager.gnome.enable = true;
   services.xserver.videoDrivers = [ "nvidia" ];
+  boot.kernelPackages = pkgs.linuxPackages;
+  hardware.nvidia.package = config.boot.kernelPackages.nvidiaPackages.beta;   # Latest beta driver
   hardware.nvidia = {
 
     # Modesetting is required.
      modesetting.enable = true;
-    #nvidiaPersistenced = true;
+    nvidiaPersistenced = true;
 
     # Nvidia power management. Experimental, and can cause sleep/suspend to fail.
     # Enable this if you have graphical corruption issues or application crashes after waking

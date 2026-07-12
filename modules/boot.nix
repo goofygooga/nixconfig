@@ -10,17 +10,18 @@ enable = true;
 device = "nodev";
 efiSupport = true;
 configurationLimit = 5;
+useOSProber = true;
  }; 
-
+boot.loader.systemd-boot.enable = false;
 #boot.kernelModules = [ "it87" "i2c-dev" ];
-boot.extraModprobeConfig = ''
-  options it87 force_id=0x8628
-'';
-hardware.fancontrol.enable = true;
-programs.coolercontrol.enable = true;
-hardware.fancontrol.config = ''
+#boot.extraModprobeConfig = ''
+#  options it87 force_id=0x8628
+#'';
+#hardware.fancontrol.enable = true;
+#programs.coolercontrol.enable = true;
+#hardware.fancontrol.config = ''
   # Your pwmconfig mappings go here
-'';
+#'';
 services.hardware.openrgb.enable = true;
 boot.loader.grub2-theme = {
     enable = true;
@@ -28,7 +29,6 @@ boot.loader.grub2-theme = {
     footer = true;
     customResolution = "1920x1080";  # Optional: Set a custom resolution
   };
-  boot.kernelPackages = pkgs.linuxPackages_zen;
   boot.loader.systemd-boot.consoleMode = "max";
   boot.kernelModules = [
     "vfio_virqfd"

@@ -9,7 +9,7 @@ binds {
     MOD+SHIFT+ESCAPE                     { show-hotkey-overlay; }
 
     // ─── Applications ───
-    MOD+RETURN                          hotkey-overlay-title="Open Terminal: Alacritty" { spawn "konsole"; }
+    MOD+RETURN                          hotkey-overlay-title="Open Terminal: Alacritty" { spawn "alacritty"; }
     MOD+D                    hotkey-overlay-title="Open App Launcher: noctalia launcher" { spawn-sh "noctalia-shell ipc call launcher toggle"; }
     MOD+B                               hotkey-overlay-title="Open Browser: firefox" { spawn "firefox"; }
     MOD+ALT+L                           hotkey-overlay-title="Lock Screen: noctalia lock" { spawn-sh "noctalia-shell ipc call lockScreen lock"; }
@@ -22,7 +22,9 @@ binds {
     XF86AUDIOLOWERVOLUME                allow-when-locked=true { spawn-sh "noctalia-shell ipc call volume decrease"; }
     XF86AUDIOMUTE                       allow-when-locked=true { spawn-sh "noctalia-shell ipc call volume muteOutput"; }
     XF86AUDIOMICMUTE                    allow-when-locked=true { spawn-sh "noctalia-shell ipc call volume muteInput"; }
-
+    XF86AUDIOPLAY                       allow-when-locked=true { spawn-sh "noctalia-shell ipc call media playPause"; }
+    XF86AUDIOPREV                       allow-when-locked=true { spawn-sh "noctalia-shell ipc call media previous"; }
+    XF86AUDIONEXT                       allow-when-locked=true { spawn-sh "noctalia-shell ipc call media next"; }
     // ─── Window Movement and Focus ───
     MOD+Q                               { close-window; }
 

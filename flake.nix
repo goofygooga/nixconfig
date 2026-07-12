@@ -63,7 +63,6 @@ silentSDDM = {
               environment.systemPackages = [
                 pkgs.hello
               ];
-              boot.loader.systemd-boot.enable = false;
             }
           )
         ];

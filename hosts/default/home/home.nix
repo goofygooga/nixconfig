@@ -22,6 +22,11 @@
     git
     vlc
     tree
+    pfetch
+    nerd-fonts.jetbrains-mono
+    #heroic
+#    gamescope
+#    gamemode
   ];
 programs.vscode = {
   enable = true;
@@ -32,6 +37,31 @@ programs.vscode = {
   ];
 };
 programs.neovim.enable = true;
+programs.alacritty = {
+    enable = true;
+    settings = {
+      font = {
+        size = 12;
+        normal = {
+          family = "JetBrainsMono Nerd Font";
+          style = "Regular";
+        };
+        bold = {
+          family = "JetBrainsMono Nerd Font";
+          style = "Bold";
+        };
+        italic = {
+          family = "JetBrainsMono Nerd Font";
+          style = "Italic";
+        };
+        bold_italic = {
+          family = "JetBrainsMono Nerd Font";
+          style = "Bold Italic";
+        };
+      };
+      window.opacity = 0.95;
+    };
+  };
 programs.neovim = {
 viAlias = true;
   vimAlias = true;};
