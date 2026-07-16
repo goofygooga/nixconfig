@@ -24,6 +24,7 @@
     tree
     pfetch
     nerd-fonts.jetbrains-mono
+claude-code
     #heroic
 #    gamescope
 #    gamemode
@@ -32,7 +33,7 @@ programs.vscode = {
   enable = true;
   extensions = with pkgs.vscode-extensions; [
     dracula-theme.theme-dracula
-    vscodevim.vim
+    anthropic.claude-code
     yzhang.markdown-all-in-one
   ];
 };
@@ -188,16 +189,17 @@ viAlias = true;
     # ".screenrc".source = ./dotfiles/screenrc;
     # ".config/niri/config.kdl".source = ./niri/config.kdl;
   };
-xdg.configFile."niri" = {
-  source = ./dotfiles/niri;
-  recursive = true;
-};
-xdg.configFile."noctalia" = {
-  source = ./dotfiles/noctalia;
-  recursive = true;
-};  
+#xdg.configFile."niri" = {
+#  source = ./dotfiles/niri;
+#  recursive = true;
+#};
+#xdg.configFile."noctalia" = {
+#  source = ./dotfiles/noctalia;
+#  recursive = true;
+#};  
 home.sessionVariables = {
     EDITOR = "nano";
+    QS_ICON_THEME = "Papirus-Dark";
   };
 
   programs.home-manager.enable = true;

@@ -15,7 +15,7 @@
     ./hardware-configuration.nix
     ../../modules/desktop.nix
     ../../modules/pkgs.nix
-    ./virtualization/virtualization.nix
+#    ./virtualization/virtualization.nix
 
   ];
   swapDevices = [
@@ -106,6 +106,16 @@ xorg.libX11
     layout = "us";
     variant = "";
   };
+services.input-remapper = {
+  enable = true;
+  package = (import inputs.nixpkgs-stable {
+    system = pkgs.stdenv.hostPlatform.system;
+    config.allowUnfree = true;
+  }).input-remapper;
+};
+
+hardware.uinput.enable = true;
+services.input-remapper.enableUdevRules = true;
 
   # Enable CUPS to print documents.
   services.printing.enable = false;
@@ -138,13 +148,19 @@ xorg.libX11
       "video"
       "render"
       "wheel"
+      "uinput"
     ];
     packages = with pkgs; [
       kdePackages.kate
       kdePackages.dolphin
+      kdePackages.ark
     ];
   };
-
+environment.variables = {
+  QT_QPA_PLATFORMTHEME = "gtk3";
+#  QS_ICON_THEME="Papirus-Dark";
+};
+services.udisks2.enable = true;
   # Install firefox.
   programs.firefox.enable = true;
   programs.firefox.package = pkgs.firefox-bin;

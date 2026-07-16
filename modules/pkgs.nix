@@ -56,9 +56,14 @@
     nautilus
     xwayland-satellite
     nvibrant
+kdePackages.polkit-kde-agent-1
+
+config.services.input-remapper.package
 #proton-cachyos_x86_64_v3
   ];
-  programs.gamemode.enable = true;
+
+  # Force the package to build using a working, stable Python 3.12 environment
+ programs.gamemode.enable = true;
   programs.niri.enable = true;
 
   programs.zsh = {

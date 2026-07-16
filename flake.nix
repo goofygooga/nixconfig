@@ -3,6 +3,7 @@
 
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
+    nixpkgs-stable.url = "github:nixos/nixpkgs/nixos-24.11"; # Add this stable source
     barely-metal = {
       url = "github:goofygooga/BarelyMetal";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -35,12 +36,16 @@ silentSDDM = {
       home-manager,
       chaotic,
       grub2-themes,
+      nixpkgs-stable,
       ...
     }:
-    {
+    let
+	system = "x86_64-linux";
+    in    
+	{
       nixosConfigurations.default = nixpkgs.lib.nixosSystem {
-        specialArgs = { inherit inputs; };
-        system = "x86_64-linux";
+        inherit system;
+        specialArgs = { pkgs-stable = import nixpkgs-stable { inherit system; config.allowUnfree = true; }; inherit inputs; };
         modules = [
           barely-metal.nixosModules.default
           nixos-facter-modules.nixosModules.facter

@@ -15,8 +15,8 @@
   networking.networkmanager.enable = true;
   services.xserver.enable = true;
   services.displayManager.sddm.enable = true;
-  services.desktopManager.plasma6.enable = true;
-  services.xserver.windowManager.dwm.enable = true;
+  services.desktopManager.plasma6.enable = false;
+  services.xserver.windowManager.dwm.enable = false;
   services.xserver.windowManager.dwm.package = pkgs.dwm.overrideAttrs (oldAttrs: rec {
     patches = [
       # for local patch files, replace with relative path to patch file
@@ -39,8 +39,8 @@
   #  services.displayManager.gdm.enable = true;
   #  services.desktopManager.gnome.enable = true;
   services.xserver.videoDrivers = [ "nvidia" ];
-  boot.kernelPackages = pkgs.linuxPackages;
-  hardware.nvidia.package = config.boot.kernelPackages.nvidiaPackages.beta;   # Latest beta driver
+  boot.kernelPackages = pkgs.linuxPackages_latest;
+#  hardware.nvidia.package = config.boot.kernelPackages.nvidiaPackages.beta;   # Latest beta driver
   hardware.nvidia = {
 
     # Modesetting is required.
