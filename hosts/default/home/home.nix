@@ -12,19 +12,17 @@
   home.stateVersion = "26.11";
 
   home.packages = with pkgs; [
-    htop
-    thunar
     hollywood
     btop
     nixfmt
     prismlauncher
     git-credential-manager
+    obsidian
     git
     vlc
     tree
-    pfetch
     nerd-fonts.jetbrains-mono
-claude-code
+tmux
     #heroic
 #    gamescope
 #    gamemode
@@ -189,18 +187,5 @@ viAlias = true;
     # ".screenrc".source = ./dotfiles/screenrc;
     # ".config/niri/config.kdl".source = ./niri/config.kdl;
   };
-#xdg.configFile."niri" = {
-#  source = ./dotfiles/niri;
-#  recursive = true;
-#};
-#xdg.configFile."noctalia" = {
-#  source = ./dotfiles/noctalia;
-#  recursive = true;
-#};  
-home.sessionVariables = {
-    EDITOR = "nano";
-    QS_ICON_THEME = "Papirus-Dark";
-  };
-
   programs.home-manager.enable = true;
 }

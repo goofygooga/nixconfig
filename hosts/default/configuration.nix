@@ -15,7 +15,7 @@
     ./hardware-configuration.nix
     ../../modules/desktop.nix
     ../../modules/pkgs.nix
-#    ./virtualization/virtualization.nix
+    ./virtualization/virtualization.nix
 
   ];
   swapDevices = [
@@ -25,58 +25,10 @@
   }
 ];
   zramSwap.enable = false;
-  programs.nix-ld.enable = true;
-  programs.nix-ld.libraries = with pkgs; [
-    glibc
- stdenv.cc.cc
 
-    # C/C++ runtime
-    glibc
-    gcc-unwrapped.lib
-
-    # Common compression
-    zlib
-    xz
-    zstd
-
-    # SSL
-    openssl
-
-    # Terminal/UI
-    ncurses
-
-    # C++ ABI
-    libgcc
-xorg.libX11
-  xorg.libXext
-  xorg.libXrandr
-  xorg.libXcursor
-  xorg.libXi
-  xorg.libXrender
-  xorg.libXfixes
-  xorg.libxcb
-  wayland
-  libGL
-  vulkan-loader
-  ];
   services.scx.enable = true;
   programs.appimage.enable = true;
   programs.appimage.binfmt = true;
-   xdg.portal = {
-    enable = true;
-    #xdgOpenUsePortal = true;
-    config = {
-      common = {
-        default = [
-          "gnome"
-        ];
-      };
-    };
-    extraPortals = with pkgs; [
-      xdg-desktop-portal-gnome
-      xdg-desktop-portal-gtk
-    ];
-  };
 
   nix.gc = {
     automatic = true;
@@ -156,10 +108,6 @@ services.input-remapper.enableUdevRules = true;
       kdePackages.ark
     ];
   };
-environment.variables = {
-  QT_QPA_PLATFORMTHEME = "gtk3";
-#  QS_ICON_THEME="Papirus-Dark";
-};
 services.udisks2.enable = true;
   # Install firefox.
   programs.firefox.enable = true;

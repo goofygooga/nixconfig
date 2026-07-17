@@ -12,10 +12,11 @@
   programs.virt-manager.enable = true;
   hardware.i2c.enable = true;
   virtualisation.libvirtd.enable = true;
+virtualisation.docker.enableNvidia = true;
+hardware.nvidia-container-toolkit.enable = true;
   powerManagement.cpuFreqGovernor = "performance";
    virtualisation = {
     # Enable Docker
-    docker.enable = true;
 
     # Enable Podman
     podman = {

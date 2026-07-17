@@ -1,22 +1,17 @@
 {
-  description = "Scott On Dat Sheet Bro";
+  description = "config";
 
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
-    nixpkgs-stable.url = "github:nixos/nixpkgs/nixos-24.11"; # Add this stable source
+    nixpkgs-stable.url = "github:nixos/nixpkgs/nixos-25.11"; # Add this stable source
     barely-metal = {
       url = "github:goofygooga/BarelyMetal";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     nixos-facter-modules.url = "github:numtide/nixos-facter-modules";
-    nix-cachyos-kernel.url = "github:xddxdd/nix-cachyos-kernel/release";
     home-manager.url = "github:nix-community/home-manager";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
     chaotic.url = "github:chaotic-cx/nyx/nyxpkgs-unstable";
-    noctalia = {
-      url = "github:noctalia-dev/noctalia/legacy-v4";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
     grub2-themes = {
       url = "github:vinceliuice/grub2-themes";
     };
@@ -30,9 +25,8 @@ silentSDDM = {
     inputs@{
       self,
       nixpkgs,
-      nix-cachyos-kernel,
-      barely-metal,
       nixos-facter-modules,
+      barely-metal,
       home-manager,
       chaotic,
       grub2-themes,
@@ -54,7 +48,6 @@ silentSDDM = {
           grub2-themes.nixosModules.default
           ./modules/boot.nix
           ./hosts/default/configuration.nix
-          ./modules/noctalia.nix
           {
             home-manager.useGlobalPkgs = true;
             home-manager.useUserPackages = true;
@@ -64,10 +57,6 @@ silentSDDM = {
           (
             { pkgs, lib, ... }:
             {
-              nixpkgs.overlays = [ nix-cachyos-kernel.overlays.default ];
-              environment.systemPackages = [
-                pkgs.hello
-              ];
             }
           )
         ];

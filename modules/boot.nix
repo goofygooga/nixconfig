@@ -22,7 +22,7 @@ boot.loader.systemd-boot.enable = false;
 #hardware.fancontrol.config = ''
   # Your pwmconfig mappings go here
 #'';
-services.hardware.openrgb.enable = true;
+#services.hardware.openrgb.enable = true;
 boot.loader.grub2-theme = {
     enable = true;
     theme = "whitesur";
@@ -36,7 +36,7 @@ boot.loader.grub2-theme = {
     "vfio_iommu_type1"
     "vfio"
     "xpad"
-"it87" "i2c-dev"
+"it87"
   ];
   boot.kernelParams = [
     "intel_iommu=on"
@@ -46,9 +46,6 @@ boot.loader.grub2-theme = {
     "splash"
     "loglevel=3"
     "nvme_load=YES"
-    "nvidia-drm.modeset=1"
-    "nouveau.modeset=0"
-    "transparent_hugepage=always"
     "tsc=reliable"
     "kvm.ignore_msrs=1"
     "kvm.report_ignored_msrs=0"

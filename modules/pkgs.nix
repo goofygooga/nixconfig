@@ -33,6 +33,7 @@
 })
  #   efibootmgr
   #  usbutils
+masterpdfeditor
     qemu
     dnsmasq
     bibata-cursors
@@ -47,24 +48,16 @@
     #javaPackages.compiler.openjdk25
     psmisc
     kmod
-    gnome-keyring
     libsecret
     polychromatic
     openrazer-daemon
-    quickshell
-    noctalia-qs
-    nautilus
-    xwayland-satellite
     nvibrant
-kdePackages.polkit-kde-agent-1
-
+libxcb-cursor
 config.services.input-remapper.package
-#proton-cachyos_x86_64_v3
   ];
 
   # Force the package to build using a working, stable Python 3.12 environment
  programs.gamemode.enable = true;
-  programs.niri.enable = true;
 
   programs.zsh = {
     enable = true;
