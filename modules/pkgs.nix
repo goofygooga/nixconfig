@@ -20,6 +20,7 @@
   users.defaultUserShell = pkgs.zsh; # Example: zsh, fish, nushell
   environment.shells = [ pkgs.zsh ];
   environment.systemPackages = with pkgs; [
+psst
     #  vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
     #  wget
     #alsa-utils
@@ -89,7 +90,7 @@ config.services.input-remapper.package
         "sudo"
       ];
 
-      theme = "robbyrussell";
+      theme = "af-magic";
     };
 
   };

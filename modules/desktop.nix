@@ -16,28 +16,6 @@ imports = [inputs.silentSDDM.nixosModules.default];
   services.xserver.enable = true;
   services.displayManager.sddm.enable = true;
   services.desktopManager.plasma6.enable = true;
-  services.xserver.windowManager.dwm.enable = true;
-  services.xserver.windowManager.dwm.package = pkgs.dwm.overrideAttrs (oldAttrs: rec {
-    patches = [
-      # for local patch files, replace with relative path to patch file
-      # for external patches
-      (pkgs.fetchpatch {
-        # replace with actual URL
-        url = "https://dwm.suckless.org/patches/actualfullscreen/dwm-actualfullscreen-20211013-cb3f58a.diff";
-        hash = "sha256-vsTuudJCy7Zo1wdwpI/nY7Zu1txXx90QoDfJLmfDUH8=";
-      })
-      (pkgs.fetchpatch {
-    url = "https://dwm.suckless.org/patches/xfce4-panel/dwm-xfce4-panel-20220306-d39e2f3.diff";
-    hash = "sha256-Z+B2qfGTdNY7RD7lbZM6SU9zyTxgdhl42o1mnhdqjqI=";
-    }
-    )
-    ];
-  });
-  #programs.ssh.askPassword = lib.mkDefault "...";
-  #programs.ssh.askPassword = lib.mkForce "${pkgs.ksshaskpass}/bin/ksshaskpass";
-  #  programs.seahorse.enable = false;
-  #  services.displayManager.gdm.enable = true;
-  #  services.desktopManager.gnome.enable = true;
   services.xserver.videoDrivers = [ "nvidia" ];
   boot.kernelPackages = pkgs.linuxPackages_latest;
 #  hardware.nvidia.package = config.boot.kernelPackages.nvidiaPackages.beta;   # Latest beta driver
