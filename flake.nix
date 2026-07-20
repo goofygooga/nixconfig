@@ -3,6 +3,7 @@
 
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
+    nixcord.url = "github:4evy/nixcord";
     nixpkgs-stable.url = "github:nixos/nixpkgs/nixos-25.11"; # Add this stable source
     nix-flatpak.url = "github:gmodena/nix-flatpak";
     nixos-facter-modules.url = "github:numtide/nixos-facter-modules";
@@ -118,6 +119,9 @@ specialArgs = {
           ./hosts/default/configuration.nix
           {
             home-manager.useGlobalPkgs = true;
+            home-manager.extraSpecialArgs = {
+    inherit inputs autovirt;
+  };
             home-manager.useUserPackages = true;
             home-manager.users.lordofchaos = import ./hosts/default/home/home.nix;
           }

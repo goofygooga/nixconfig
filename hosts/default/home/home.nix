@@ -10,6 +10,9 @@
   home.username = "lordofchaos";
   home.homeDirectory = "/home/lordofchaos";
   home.stateVersion = "26.11";
+  
+	imports = [ ./discord.nix ];
+
 
   home.packages = with pkgs; [
     hollywood

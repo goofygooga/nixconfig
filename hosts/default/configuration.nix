@@ -17,14 +17,9 @@
     ../../modules/pkgs.nix
     ./virtualization/virtualization.nix
   ];
-  swapDevices = [
-  {
-    device = "/var/lib/swapfile";
-    size = 8 * 1024; # Size in mebibytes (16 GiB)
-  }
-];
+  boot.zswap.enable = true;
   zramSwap.enable = false;
-
+  
   services.scx.enable = true;
   programs.appimage.enable = true;
   programs.appimage.binfmt = true;
