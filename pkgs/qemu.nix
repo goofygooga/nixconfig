@@ -2,7 +2,6 @@
   lib,
   qemu,
   autovirt,
-  cpu ? "amd",
   fetchurl,
   acpiOemId ? "ALASKA",
   acpiOemTableId ? "A M I   ",
@@ -16,14 +15,6 @@
   cdModel ? null,
   cfataModel ? null,
 }:
-
-let
-  cpuLower = lib.toLower cpu;
-  patchFile =
-    if cpuLower == "amd" then
-      "${autovirt}/patches/QEMU/AMD-v11.0.2.patch"
-    else
-      "${autovirt}/patches/QEMU/Intel-v11.0.2.patch";
 
   # Comprehensive realistic drive model collections (auto-select if not specified)
   ideModels = [
@@ -79,8 +70,8 @@ in
     hash = "sha256-N0X26oji6H/g3IOLKx1OCncL9I4BodWhhoQqH/92zPU=";
   };
   patches = (old.patches or []) ++ [ 
-    patchFile
-    ./extpatches/qemu-rtl8125-rel.patch
+    "${autovirt}/patches/QEMU/Intel-v11.0.2.patch"
+    "./extpatches/qemu-rtl8125-rel.patch"
    ];
 
   postPatch = (old.postPatch or "") + ''

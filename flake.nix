@@ -18,10 +18,10 @@
     grub2-themes = {
       url = "github:vinceliuice/grub2-themes";
     };
-silentSDDM = {
+    silentSDDM = {
       url = "github:uiriansan/SilentSDDM";
       inputs.nixpkgs.follows = "nixpkgs";
-   };
+    };
   };
 
   outputs =
@@ -35,16 +35,21 @@ silentSDDM = {
       nixpkgs-stable,
       nix-flatpak,
       autovirt,
-       nix-cachyos-kernel,
+      nix-cachyos-kernel,
       ...
     }:
     let
-	system = "x86_64-linux";
-  supportedSystems = [ "x86_64-linux" ];
+      system = "x86_64-linux";
+      supportedSystems = [ "x86_64-linux" ];
       forAllSystems = nixpkgs.lib.genAttrs supportedSystems;
-      pkgsFor = system: import nixpkgs { inherit system; config.allowUnfree = true; };
-    in    
-	{
+      pkgsFor =
+        system:
+        import nixpkgs {
+          inherit system;
+          config.allowUnfree = true;
+        };
+    in
+    {
       nixosModules = {
         default = self.nixosModules.barelyMetal;
         barelyMetal = import ./pkgs/modules {
@@ -65,20 +70,10 @@ silentSDDM = {
 
           qemu-patched = callPackage ./pkgs/qemu.nix {
             inherit autovirt;
-            cpu = "amd";
-          };
-          qemu-patched-intel = callPackage ./pkgs/qemu.nix {
-            inherit autovirt;
-            cpu = "intel";
           };
 
           ovmf-patched = callPackage ./pkgs/ovmf.nix {
             inherit autovirt;
-            cpu = "amd";
-          };
-          ovmf-patched-intel = callPackage ./pkgs/ovmf.nix {
-            inherit autovirt;
-            cpu = "intel";
           };
 
           smbios-spoofer = callPackage ./pkgs/smbios-spoofer.nix { inherit autovirt; };
@@ -101,30 +96,31 @@ silentSDDM = {
               dmidecode
             ];
           };
-      }); 
+      });
       nixosConfigurations.default = nixpkgs.lib.nixosSystem {
         inherit system;
-specialArgs = {
-  inherit inputs autovirt;
-  pkgs-stable = import nixpkgs-stable {
-    inherit system;
-    config.allowUnfree = true;
-  };
-};        modules = [
+        specialArgs = {
+          inherit inputs autovirt;
+          pkgs-stable = import nixpkgs-stable {
+            inherit system;
+            config.allowUnfree = true;
+          };
+        };
+        modules = [
           nixos-facter-modules.nixosModules.facter
           home-manager.nixosModules.home-manager
           chaotic.homeModules.default
           grub2-themes.nixosModules.default
-	  nix-flatpak.nixosModules.nix-flatpak     
-    self.nixosModules.default     
-./modules/boot.nix
+          nix-flatpak.nixosModules.nix-flatpak
+          self.nixosModules.default
+          ./modules/boot.nix
           ./hosts/default/configuration.nix
-          
+
           {
             home-manager.useGlobalPkgs = true;
             home-manager.extraSpecialArgs = {
-    inherit inputs autovirt;
-  };
+              inherit inputs autovirt;
+            };
             home-manager.useUserPackages = true;
             home-manager.users.lordofchaos = import ./hosts/default/home/home.nix;
           }
@@ -133,8 +129,9 @@ specialArgs = {
             { pkgs, lib, ... }:
             {
               nixpkgs.overlays = [
-              # Use the exact nixpkgs revision as defined in this repo to ensure binary cache hits.
-              nix-cachyos-kernel.overlays.pinned ];
+                # Use the exact nixpkgs revision as defined in this repo to ensure binary cache hits.
+                nix-cachyos-kernel.overlays.pinned
+              ];
             }
           )
         ];

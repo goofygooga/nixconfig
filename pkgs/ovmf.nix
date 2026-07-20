@@ -4,8 +4,6 @@
   buildPackages,
   autovirt,
   edk2,
-  cpu ? "amd",
-
   biosVendor ? "American Megatrends International, LLC.",
   biosVersion ? "1.0",
   biosDate ? "01/01/2024",
@@ -29,12 +27,7 @@
 
 let
   cpuLower = lib.toLower cpu;
-  patchFile =
-    if cpuLower == "amd" then
-      "${autovirt}/patches/EDK2/AMD-edk2-stable202605.patch"
-    else
-      "${autovirt}/patches/EDK2/Intel-edk2-stable202605.patch";
-
+  patchFile = "${autovirt}/patches/EDK2/Intel-edk2-stable202605.patch";
   pythonEnv = buildPackages.python3.withPackages (ps: [ ps.distlib ]);
   targetArch = "X64";
 in
