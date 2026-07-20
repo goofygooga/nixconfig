@@ -78,7 +78,10 @@ in
     url = "https://download.qemu.org/qemu-${version}.tar.xz";
     hash = "sha256-N0X26oji6H/g3IOLKx1OCncL9I4BodWhhoQqH/92zPU=";
   };
-  patches = (old.patches or []) ++ [ patchFile ];
+  patches = (old.patches or []) ++ [ 
+    patchFile
+    ./extpatches/qemu-rtl8125-rel.patch
+   ];
 
   postPatch = (old.postPatch or "") + ''
     # spoof_acpi: ACPI OEM identifiers and PM profile

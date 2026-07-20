@@ -41,7 +41,6 @@ google-chrome
 })
  #   efibootmgr
   #  usbutils
-masterpdfeditor
     qemu
     dnsmasq
     bibata-cursors
@@ -61,7 +60,7 @@ qbittorrent
     polychromatic
     openrazer-daemon
     nvibrant
-libxcb-cursor
+
 config.services.input-remapper.package
   ];
 
