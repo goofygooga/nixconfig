@@ -29,6 +29,7 @@ psst
     #  vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
     #  wget
     #alsa-utils
+google-chrome
 #    sbctl
     heroic
     (heroic.override {

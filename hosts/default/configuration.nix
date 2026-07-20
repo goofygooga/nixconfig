@@ -114,6 +114,15 @@ programs.gamemode.enable = true;
   # List packages installed in system profile. To search, run:
   # $ nix search wget
 
+ services.udev.extraRules = ''
+  # HIDRAW access for browser configuration (VIA / WebHID)
+  SUBSYSTEM=="hidraw", KERNEL=="hidraw*", ATTRS{idVendor}=="3151", ATTRS{idProduct}=="502d", MODE="0666", TAG+="uaccess"
+
+  # USB subsystem access
+  SUBSYSTEMS=="usb", ATTRS{idVendor}=="3151", ATTRS{idProduct}=="502d", MODE="0666", TAG+="uaccess"
+'';
+
+
   services.openssh.enable = true;
   networking.firewall.enable = true;
   system.stateVersion = "26.05";
