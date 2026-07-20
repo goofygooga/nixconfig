@@ -7,7 +7,7 @@
     enable = true; # Master switch, already covered in installation
     remotePlay.openFirewall = true; # Open ports in the firewall for Steam Remote Play
     dedicatedServer.openFirewall = true; # Open ports for Source Dedicated Server hosting
-
+    extraPackages =  with pkgs; [ bibata-cursors  ];
     # Other general flags if available can be set here.
   extraCompatPackages = [ pkgs.proton-cachyos_x86_64_v3 ];
   };
@@ -20,6 +20,7 @@
 	"com.spotify.Client"
 	"com.dec05eba.gpu_screen_recorder"
 	"com.surfshark.Surfshark"
+	"org.waywallen.waywallen"
 ];  
   programs.localsend.enable = true;
   users.defaultUserShell = pkgs.zsh; # Example: zsh, fish, nushell

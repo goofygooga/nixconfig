@@ -15,19 +15,21 @@
 virtualisation.docker.enableNvidia = true;
 hardware.nvidia-container-toolkit.enable = true;
   powerManagement.cpuFreqGovernor = "performance";
-   virtualisation = {
-    # Enable Docker
-
-    # Enable Podman
-    podman = {
-      enable = true;
-      # Create a `docker` alias for podman (handy if you want podman to mimic docker)
-      dockerCompat = true;
-      # Required for containers to look up each other's IP addresses via DNS
-      defaultNetwork.settings.dns_enabled = true;
-    };
+   virtualisation.docker = {
+  enable = true;
+  # Customize Docker daemon settings using the daemon.settings option
+  daemon.settings = {
+    dns = [ "1.1.1.1" "8.8.8.8" ];
+    log-driver = "journald";
+    registry-mirrors = [ "https://mirror.gcr.io" ];
+    storage-driver = "overlay2";
   };
-
+  # Use the rootless mode - run Docker daemon as non-root user
+  rootless = {
+    enable = true;
+    setSocketVariable = true;
+  };
+};
   # 2. Install Distrobox system-wide
   environment.systemPackages = with pkgs; [
     distrobox

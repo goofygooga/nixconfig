@@ -9,7 +9,7 @@
 imports = [inputs.silentSDDM.nixosModules.default];
     programs.silentSDDM = {
         enable = true;
-        theme = "everforest";
+        theme = "default";
         # settings = { ... }; see example in module
     };
   networking.networkmanager.enable = true;
@@ -17,8 +17,7 @@ imports = [inputs.silentSDDM.nixosModules.default];
   services.displayManager.sddm.enable = true;
   services.desktopManager.plasma6.enable = true;
   services.xserver.videoDrivers = [ "nvidia" ];
-  boot.kernelPackages = pkgs.linuxPackages_latest;
-#  hardware.nvidia.package = config.boot.kernelPackages.nvidiaPackages.beta;   # Latest beta driver
+  boot.kernelPackages = pkgs.cachyosKernels.linuxPackages-cachyos-latest-x86_64-v4;
   hardware.nvidia = {
 
     # Modesetting is required.

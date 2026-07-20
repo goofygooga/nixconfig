@@ -47,8 +47,8 @@ boot.loader.grub2-theme = {
     "loglevel=3"
     "nvme_load=YES"
     "tsc=reliable"
-    "kvm.ignore_msrs=1"
-    "kvm.report_ignored_msrs=0"
+    "nvidia_drm.modeset=1"
+    "nouveau.modeset=0"
   ];
   boot.loader.systemd-boot.configurationLimit = 4;
   boot.loader.efi.canTouchEfiVariables = true;

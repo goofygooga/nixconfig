@@ -78,10 +78,10 @@ ${pkgs.kmod}/bin/modprobe -r nvidia
     if [ "$VM" = "$TARGET_VM" ] && [ "$OP" = "prepare" ] && [ "$PHASE" = "begin" ]; then
         echo "Hugepages hook incoming!"
         
-        sync && echo 3 | sudo tee /proc/sys/vm/drop_caches
+        sync && echo 3 | tee /proc/sys/vm/drop_caches
         sysctl vm.compact_memory=1
-        echo 1 > tee /proc/sys/vm/compact_memory
-	sysctl vm.nr_hugepages=6912
+        echo 1 | tee /proc/sys/vm/compact_memory
+	      sysctl vm.nr_hugepages=6912
       fi
     if [ "$VM" = "$TARGET_VM" ] && [ "$OP" = "release" ] && [ "$PHASE" = "end" ]; then
         echo "Releasing hugepages back to host"

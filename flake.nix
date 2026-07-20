@@ -8,6 +8,7 @@
     nix-flatpak.url = "github:gmodena/nix-flatpak";
     nixos-facter-modules.url = "github:numtide/nixos-facter-modules";
     home-manager.url = "github:nix-community/home-manager";
+    nix-cachyos-kernel.url = "github:xddxdd/nix-cachyos-kernel/release";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
     chaotic.url = "github:chaotic-cx/nyx/nyxpkgs-unstable";
     autovirt = {
@@ -34,6 +35,7 @@ silentSDDM = {
       nixpkgs-stable,
       nix-flatpak,
       autovirt,
+       nix-cachyos-kernel,
       ...
     }:
     let
@@ -117,6 +119,7 @@ specialArgs = {
     self.nixosModules.default     
 ./modules/boot.nix
           ./hosts/default/configuration.nix
+          
           {
             home-manager.useGlobalPkgs = true;
             home-manager.extraSpecialArgs = {
@@ -129,6 +132,9 @@ specialArgs = {
           (
             { pkgs, lib, ... }:
             {
+              nixpkgs.overlays = [
+              # Use the exact nixpkgs revision as defined in this repo to ensure binary cache hits.
+              nix-cachyos-kernel.overlays.pinned ];
             }
           )
         ];
