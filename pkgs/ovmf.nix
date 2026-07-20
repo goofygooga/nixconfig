@@ -26,7 +26,7 @@
 }:
 
 let
-  cpuLower = lib.toLower cpu;
+  cpuLower = "intel";
   patchFile = "${autovirt}/patches/EDK2/Intel-edk2-stable202605.patch";
   pythonEnv = buildPackages.python3.withPackages (ps: [ ps.distlib ]);
   targetArch = "X64";

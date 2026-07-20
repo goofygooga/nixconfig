@@ -15,7 +15,7 @@
   cdModel ? null,
   cfataModel ? null,
 }:
-
+let
   # Comprehensive realistic drive model collections (auto-select if not specified)
   ideModels = [
     "Samsung SSD 870 EVO 1TB"
@@ -71,7 +71,7 @@ in
   };
   patches = (old.patches or []) ++ [ 
     "${autovirt}/patches/QEMU/Intel-v11.0.2.patch"
-    "./extpatches/qemu-rtl8125-rel.patch"
+    ./extpatches/qemu-rtl8125-rel.patch
    ];
 
   postPatch = (old.postPatch or "") + ''

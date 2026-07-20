@@ -24,11 +24,7 @@ let
   probe = cfg.probeData;
   hasProbe = probe != { };
 
-  resolvedCpu = firstNonNull [
-    cfg.cpu
-    (facterLib.getCpuFromProbe probe)
-    (if hasFacter then facterLib.detectCpuFromFacter facterReport else null)
-  ] "amd";
+  resolvedCpu = cfg.cpu or "intel";
 
   resolvedBiosVendor = firstNonNull [
     spoofCfg.biosVendor
@@ -100,10 +96,8 @@ let
   ] 1;
 
   cpuLower = lib.toLower resolvedCpu;
-
   patchedQemu = pkgs.callPackage ../qemu.nix {
     inherit autovirt;
-    cpu = resolvedCpu;
     acpiOemId = resolvedAcpiOemId;
     acpiOemTableId = resolvedAcpiOemTableId;
     acpiCreatorId = resolvedAcpiCreatorId;
@@ -119,7 +113,6 @@ let
 
   patchedOvmf = pkgs.callPackage ../ovmf.nix {
     inherit autovirt;
-    cpu = resolvedCpu;
     biosVendor = resolvedBiosVendor;
     biosVersion = resolvedBiosVersion;
     biosDate = resolvedBiosDate;
@@ -222,7 +215,6 @@ let
       --qemu ${lib.escapeShellArg "${stateDir}/bin/qemu-system-x86_64"} \
       --ovmf-code ${lib.escapeShellArg "${stateDir}/firmware/OVMF_CODE.fd"} \
       --ovmf-vars ${lib.escapeShellArg "${stateDir}/firmware/OVMF_VARS.fd"} \
-      --cpu-vendor ${lib.escapeShellArg resolvedCpu} \
       --memory ${lib.escapeShellArg (toString vmCfg.memory)} \
       --cores ${lib.escapeShellArg (toString vmCfg.cores)} \
       --threads ${lib.escapeShellArg (toString vmCfg.threads)} \
@@ -540,14 +532,6 @@ in
 
     users.groups.libvirtd = { };
     users.groups.kvm = { };
-
-    boot.kernelModules = [
-      "kvm"
-      (if cpuLower == "amd" then "kvm-amd" else "kvm-intel")
-    ];
-
-    boot.kernelParams = lib.optionals (cpuLower == "intel") [ "intel_iommu=on" ];
-
     security.polkit.enable = true;
 
     environment.systemPackages =
