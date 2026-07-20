@@ -15,14 +15,11 @@
     spoofing.bootLogo = ./boot-logo.bmp;
 
     vm = {
-      memory = 8192; # MiB
+      memory = 4096; # MiB
       cores = 8;
       threads = 2;
       audioBackend = "none";
-      diskSize = "500G";
-  
-      isoPath = /home/lordofchaos/Downloads/Win11_25H2_English_x64_v2.iso;
-    
+      diskSize = "500G";    
       enableHyperVPassthrough = false;
     };
   };

@@ -16,7 +16,6 @@
     ../../modules/desktop.nix
     ../../modules/pkgs.nix
     ./virtualization/virtualization.nix
-
   ];
   swapDevices = [
   {

@@ -1,0 +1,1 @@
+nixos config with cloned from https://github.com/Dreaming-Codes/BarelyMetal.git
