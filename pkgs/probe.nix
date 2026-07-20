@@ -98,10 +98,7 @@ writeShellApplication {
     BIOS_REV_RAW=$(dmidecode -t0 2>/dev/null | grep "BIOS Revision:" | awk '{print $3}' || echo "1.0")
     BIOS_REV_MAJOR=$(echo "$BIOS_REV_RAW" | cut -d. -f1)
     BIOS_REV_MINOR=$(echo "$BIOS_REV_RAW" | cut -d. -f2)
-    uhex() {
-      printf "0x%0*x" "$1" "$2"
-    }
-    BIOS_REVISION="$(uhex 4 "$(</sys/class/dmi/id/bios_release)")"
+    BIOS_REVISION=$(printf "0x%04x%04x" "$BIOS_REV_MAJOR" "$BIOS_REV_MINOR")
     PROCESSOR_MFR=$(dmidecode --string processor-manufacturer 2>/dev/null || echo "Unknown")
 
     # --- CPU ---

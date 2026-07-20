@@ -10,5 +10,6 @@
       inherit self autovirt;
     })
     (import ./looking-glass.nix)
+    (import ./kernel.nix)
   ];
 }

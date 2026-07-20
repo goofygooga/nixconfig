@@ -19,6 +19,7 @@
 	"org.vinegarhq.Sober"
 	"com.spotify.Client"
 	"com.dec05eba.gpu_screen_recorder"
+	"com.surfshark.Surfshark"
 ];  
   programs.localsend.enable = true;
   users.defaultUserShell = pkgs.zsh; # Example: zsh, fish, nushell
