@@ -40,11 +40,11 @@ stdenv.mkDerivation {
   # previous `edk2-src` flake input was declared but never consumed here
   # and has been removed to avoid a stale, unused lock-file entry.
   src = fetchgit {
-  url = "https://github.com/tianocore/edk2.git";
-  rev = "edk2-stable202605";
-  fetchSubmodules = true;
-  hash = "sha256-sUqLocdX7lxN2pEdn84Cjh8pOzYqIeKqO144XhwKA30=";
-};
+    url = "https://github.com/tianocore/edk2.git";
+    rev = "edk2-stable202605";
+    fetchSubmodules = true;
+    hash = "sha256-sUqLocdX7lxN2pEdn84Cjh8pOzYqIeKqO144XhwKA30=";
+  };
 
   depsBuildBuild = [ buildPackages.stdenv.cc ];
 

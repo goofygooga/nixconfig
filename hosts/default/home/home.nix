@@ -10,9 +10,8 @@
   home.username = "lordofchaos";
   home.homeDirectory = "/home/lordofchaos";
   home.stateVersion = "26.11";
-  
-	imports = [ ./discord.nix ];
 
+  imports = [ ./discord.nix ];
 
   home.packages = with pkgs; [
     hollywood
@@ -25,21 +24,21 @@
     vlc
     tree
     nerd-fonts.jetbrains-mono
-tmux
+    tmux
     #heroic
-#    gamescope
-#    gamemode
+    #    gamescope
+    #    gamemode
   ];
-programs.vscode = {
-  enable = true;
-  extensions = with pkgs.vscode-extensions; [
-    dracula-theme.theme-dracula
-    anthropic.claude-code
-    yzhang.markdown-all-in-one
-  ];
-};
-programs.neovim.enable = true;
-programs.alacritty = {
+  programs.vscode = {
+    enable = true;
+    extensions = with pkgs.vscode-extensions; [
+      dracula-theme.theme-dracula
+      anthropic.claude-code
+      yzhang.markdown-all-in-one
+    ];
+  };
+  programs.neovim.enable = true;
+  programs.alacritty = {
     enable = true;
     settings = {
       font = {
@@ -64,11 +63,13 @@ programs.alacritty = {
       window.opacity = 0.95;
     };
   };
-programs.neovim = {
-viAlias = true;
-  vimAlias = true;};
+  programs.neovim = {
+    viAlias = true;
+    vimAlias = true;
+  };
   programs.neovim.plugins = [
-  pkgs.vimPlugins.LazyVim ];
+    pkgs.vimPlugins.LazyVim
+  ];
   programs.git = {
     enable = true;
     userName = "Scorcher";

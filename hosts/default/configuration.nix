@@ -19,7 +19,7 @@
   ];
   boot.zswap.enable = true;
   zramSwap.enable = false;
-  
+
   services.scx.enable = true;
   programs.appimage.enable = true;
   programs.appimage.binfmt = true;
@@ -52,16 +52,17 @@
     layout = "us";
     variant = "";
   };
-services.input-remapper = {
-  enable = true;
-  package = (import inputs.nixpkgs-stable {
-    system = pkgs.stdenv.hostPlatform.system;
-    config.allowUnfree = true;
-  }).input-remapper;
-};
+  services.input-remapper = {
+    enable = true;
+    package =
+      (import inputs.nixpkgs-stable {
+        system = pkgs.stdenv.hostPlatform.system;
+        config.allowUnfree = true;
+      }).input-remapper;
+  };
 
-hardware.uinput.enable = true;
-services.input-remapper.enableUdevRules = true;
+  hardware.uinput.enable = true;
+  services.input-remapper.enableUdevRules = true;
 
   # Enable CUPS to print documents.
   services.printing.enable = false;
@@ -102,26 +103,25 @@ services.input-remapper.enableUdevRules = true;
       kdePackages.ark
     ];
   };
-services.udisks2.enable = true;
+  services.udisks2.enable = true;
   # Install firefox.
   programs.firefox.enable = true;
   programs.firefox.package = pkgs.firefox-bin;
   programs.gamescope.enable = true;
-programs.gamemode.enable = true;
+  programs.gamemode.enable = true;
   # Allow unfree packages
   #  nixpkgs.config.allowUnfree = true;
 
   # List packages installed in system profile. To search, run:
   # $ nix search wget
 
- services.udev.extraRules = ''
-  # HIDRAW access for browser configuration (VIA / WebHID)
-  SUBSYSTEM=="hidraw", KERNEL=="hidraw*", ATTRS{idVendor}=="3151", ATTRS{idProduct}=="502d", MODE="0666", TAG+="uaccess"
+  services.udev.extraRules = ''
+    # HIDRAW access for browser configuration (VIA / WebHID)
+    SUBSYSTEM=="hidraw", KERNEL=="hidraw*", ATTRS{idVendor}=="3151", ATTRS{idProduct}=="502d", MODE="0666", TAG+="uaccess"
 
-  # USB subsystem access
-  SUBSYSTEMS=="usb", ATTRS{idVendor}=="3151", ATTRS{idProduct}=="502d", MODE="0666", TAG+="uaccess"
-'';
-
+    # USB subsystem access
+    SUBSYSTEMS=="usb", ATTRS{idVendor}=="3151", ATTRS{idProduct}=="502d", MODE="0666", TAG+="uaccess"
+  '';
 
   services.openssh.enable = true;
   networking.firewall.enable = true;

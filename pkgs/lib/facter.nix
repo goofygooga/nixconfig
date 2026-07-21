@@ -12,13 +12,33 @@ rec {
   # --- nix-facter report helpers ---
 
   hasAmdCpu =
-    report: any ({ vendor_name ? "", ... }: vendor_name == "AuthenticAMD") (report.hardware.cpu or [ ]);
+    report:
+    any (
+      {
+        vendor_name ? "",
+        ...
+      }:
+      vendor_name == "AuthenticAMD"
+    ) (report.hardware.cpu or [ ]);
 
   hasIntelCpu =
-    report: any ({ vendor_name ? "", ... }: vendor_name == "GenuineIntel") (report.hardware.cpu or [ ]);
+    report:
+    any (
+      {
+        vendor_name ? "",
+        ...
+      }:
+      vendor_name == "GenuineIntel"
+    ) (report.hardware.cpu or [ ]);
 
   detectCpuFromFacter =
-    report: if hasAmdCpu report then "amd" else if hasIntelCpu report then "intel" else null;
+    report:
+    if hasAmdCpu report then
+      "amd"
+    else if hasIntelCpu report then
+      "intel"
+    else
+      null;
 
   getBiosVendorFromFacter = report: (report.smbios.bios or { }).vendor or null;
   getBiosVersionFromFacter = report: (report.smbios.bios or { }).version or null;

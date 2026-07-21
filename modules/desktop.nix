@@ -6,14 +6,14 @@
   ...
 }:
 {
-imports = [
-  inputs.silentSDDM.nixosModules.default
- ];
-    programs.silentSDDM = {
-        enable = true;
-        theme = "default";
-        # settings = { ... }; see example in module
-    };
+  imports = [
+    inputs.silentSDDM.nixosModules.default
+  ];
+  programs.silentSDDM = {
+    enable = true;
+    theme = "default";
+    # settings = { ... }; see example in module
+  };
   networking.networkmanager.enable = true;
   services.xserver.enable = true;
   services.displayManager.sddm.enable = true;
@@ -35,7 +35,7 @@ imports = [
   hardware.nvidia = {
 
     # Modesetting is required.
-     modesetting.enable = true;
+    modesetting.enable = true;
     nvidiaPersistenced = true;
 
     # Nvidia power management. Experimental, and can cause sleep/suspend to fail.
@@ -54,7 +54,7 @@ imports = [
     # supported GPUs is at:
     # https://github.com/NVIDIA/open-gpu-kernel-modules#compatible-gpus
     # Only available from driver 515.43.04+
-     open = true;
+    open = true;
 
     # Enable the Nvidia settings menu,
     # accessible via `nvidia-settings`.

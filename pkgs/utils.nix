@@ -40,19 +40,23 @@ stdenv.mkDerivation {
 
     # evdev-auto: prints XML snippets for evdev input passthrough
     makeWrapper $out/share/barely-metal/scripts/evdev-auto.sh $out/bin/barely-metal-evdev \
-      --prefix PATH : ${lib.makeBinPath [
-        coreutils
-        gnugrep
-        gnused
-        gawk
-      ]}
+      --prefix PATH : ${
+        lib.makeBinPath [
+          coreutils
+          gnugrep
+          gnused
+          gawk
+        ]
+      }
 
     # vbios-dumper: dumps GPU VBIOS ROM
     makeWrapper $out/share/barely-metal/scripts/vbios-dumper.sh $out/bin/barely-metal-vbios-dumper \
-      --prefix PATH : ${lib.makeBinPath [
-        coreutils
-        pciutils
-      ]}
+      --prefix PATH : ${
+        lib.makeBinPath [
+          coreutils
+          pciutils
+        ]
+      }
 
   '';
 

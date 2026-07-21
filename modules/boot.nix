@@ -5,29 +5,29 @@
   ...
 }:
 {
- boot.loader.grub = {
-enable = true;
-device = "nodev";
-efiSupport = true;
-configurationLimit = 5;
-useOSProber = true;
- }; 
-boot.loader.systemd-boot.enable = false;
-#boot.kernelModules = [ "it87" "i2c-dev" ];
-#boot.extraModprobeConfig = ''
-#  options it87 force_id=0x8628
-#'';
-#hardware.fancontrol.enable = true;
-#programs.coolercontrol.enable = true;
-#hardware.fancontrol.config = ''
+  boot.loader.grub = {
+    enable = true;
+    device = "nodev";
+    efiSupport = true;
+    configurationLimit = 5;
+    useOSProber = true;
+  };
+  boot.loader.systemd-boot.enable = false;
+  #boot.kernelModules = [ "it87" "i2c-dev" ];
+  #boot.extraModprobeConfig = ''
+  #  options it87 force_id=0x8628
+  #'';
+  #hardware.fancontrol.enable = true;
+  #programs.coolercontrol.enable = true;
+  #hardware.fancontrol.config = ''
   # Your pwmconfig mappings go here
-#'';
-#services.hardware.openrgb.enable = true;
-boot.loader.grub2-theme = {
+  #'';
+  #services.hardware.openrgb.enable = true;
+  boot.loader.grub2-theme = {
     enable = true;
     theme = "whitesur";
     footer = true;
-    customResolution = "1920x1080";  # Optional: Set a custom resolution
+    customResolution = "1920x1080"; # Optional: Set a custom resolution
   };
   boot.loader.systemd-boot.consoleMode = "max";
   boot.kernelModules = [
@@ -36,7 +36,7 @@ boot.loader.grub2-theme = {
     "vfio_iommu_type1"
     "vfio"
     "xpad"
-"it87"
+    "it87"
   ];
   boot.kernelParams = [
     "intel_iommu=on"
