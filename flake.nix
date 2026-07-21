@@ -129,7 +129,6 @@
             { pkgs, lib, ... }:
             {
               nixpkgs.overlays = [
-                # Use the exact nixpkgs revision as defined in this repo to ensure binary cache hits.
                 nix-cachyos-kernel.overlays.pinned
               ];
             }

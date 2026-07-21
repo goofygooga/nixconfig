@@ -49,6 +49,9 @@ boot.loader.grub2-theme = {
     "tsc=reliable"
     "nvidia_drm.modeset=1"
     "nouveau.modeset=0"
+    "idle=poll"
+    "processor.max_cstate=1"
+
   ];
   boot.loader.systemd-boot.configurationLimit = 4;
   boot.loader.efi.canTouchEfiVariables = true;

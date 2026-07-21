@@ -18,7 +18,6 @@ let
 
       ${pkgs.systemd}/bin/systemctl isolate multi-user.target
       ${pkgs.systemd}/bin/systemctl stop nvidia-persistenced.service || true
-      ${pkgs.systemd}/bin/systemctl stop nvidia-powerd.service 2>/dev/null || true
       ${pkgs.systemd}/bin/systemctl stop bluetooth
       sleep 2
       ${pkgs.psmisc}/bin/fuser -k /dev/nvidia* || true
@@ -61,7 +60,6 @@ ${pkgs.kmod}/bin/modprobe -r nvidia
       echo efi-framebuffer.0 > /sys/bus/platform/drivers/efi-framebuffer/bind || true
 
       ${pkgs.systemd}/bin/systemctl start nvidia-persistenced.service || true
-      ${pkgs.systemd}/bin/systemctl start nvidia-powerd.service 2>/dev/null || true
       ${pkgs.systemd}/bin/systemctl start bluetooth
       ${pkgs.systemd}/bin/systemctl isolate graphical.target
     fi

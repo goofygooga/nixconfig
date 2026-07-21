@@ -6,7 +6,9 @@
   ...
 }:
 {
-imports = [inputs.silentSDDM.nixosModules.default];
+imports = [
+  inputs.silentSDDM.nixosModules.default
+ ];
     programs.silentSDDM = {
         enable = true;
         theme = "default";
@@ -17,7 +19,7 @@ imports = [inputs.silentSDDM.nixosModules.default];
   services.displayManager.sddm.enable = true;
   services.desktopManager.plasma6.enable = true;
   services.xserver.videoDrivers = [ "nvidia" ];
-  boot.kernelPackages = pkgs.cachyosKernels.linuxPackages-cachyos-latest-x86_64-v4;
+  boot.kernelPackages = pkgs.linuxPackages_latest;
   hardware.nvidia = {
 
     # Modesetting is required.
