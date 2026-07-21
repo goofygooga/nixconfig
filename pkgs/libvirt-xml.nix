@@ -282,17 +282,10 @@ writeShellApplication {
       args+=('--disk' "path=$GUEST_ISO,device=cdrom,bus=sata,readonly=on,target.dev=sdc")
     fi
     args+=(
-      '--qemu-commandline=-overcommit'
-      '--qemu-commandline=cpu-pm=on'
-
-      '--qemu-commandline=-global'
-      '--qemu-commandline=ICH9-LPC.acpi-pci-hotplug-with-bridge-support=off'
-
-      '--qemu-commandline=-global'
-      '--qemu-commandline=ICH9-LPC.x-smi-cpu-hotplug=off'
-
-      '--qemu-commandline=-global'
-      '--qemu-commandline=ICH9-LPC.x-smi-cpu-hotunplug=off'
+      '--qemu-commandline=-overcommit cpu-pm=on'
+      '--qemu-commandline=-global ICH9-LPC.acpi-pci-hotplug-with-bridge-support=off'
+      '--qemu-commandline=-global ICH9-LPC.x-smi-cpu-hotplug=off'
+      '--qemu-commandline=-global ICH9-LPC.x-smi-cpu-hotunplug=off'
     )
 
     # Evdev input devices

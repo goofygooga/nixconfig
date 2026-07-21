@@ -30,55 +30,51 @@ let
     spoofCfg.biosVendor
     (facterLib.getBiosVendorFromProbe probe)
     (if hasFacter then facterLib.getBiosVendorFromFacter facterReport else null)
-  ] "American Megatrends International, LLC.";
+  ] "American Megatrends Inc.";
 
   resolvedBiosVersion = firstNonNull [
     spoofCfg.biosVersion
     (facterLib.getBiosVersionFromProbe probe)
     (if hasFacter then facterLib.getBiosVersionFromFacter facterReport else null)
-  ] "1.0";
+  ] "R01-A4";
 
   resolvedBiosDate = firstNonNull [
     spoofCfg.biosDate
     (facterLib.getBiosDateFromProbe probe)
     (if hasFacter then facterLib.getBiosDateFromFacter facterReport else null)
-  ] "01/01/2024";
+  ] "01/20/2022";
 
   resolvedBiosRevision = firstNonNull [
     spoofCfg.biosRevision
     (facterLib.getBiosRevisionFromProbe probe)
-  ] "0x00010000";
+  ] "0x000A0004";
 
-  resolvedSmbiosManufacturer = firstNonNull [
-    spoofCfg.smbiosManufacturer
-    (facterLib.getProcessorManufacturerFromProbe probe)
-    (if hasFacter then facterLib.getProcessorManufacturerFromFacter facterReport else null)
-  ] (if resolvedCpu == "intel" then "Intel(R) Corporation" else "Advanced Micro Devices, Inc.");
-
+  resolvedSmbiosManufacturer = firstNonNull [ spoofCfg.smbiosManufacturer (facterLib.getProcessorManufacturerFromProbe probe) (if hasFacter then facterLib.getProcessorManufacturerFromFacter facterReport else null) ] (if resolvedCpu == "intel" then "Intel(R) Corporation" else "Advanced Micro Devices, Inc.");
+  
   resolvedAcpiOemId = firstNonNull [
     spoofCfg.acpiOemId
     (facterLib.getAcpiOemIdFromProbe probe)
-  ] "ALASKA";
+  ] "ARCSYS";
 
   resolvedAcpiOemTableId = firstNonNull [
     spoofCfg.acpiOemTableId
     (facterLib.getAcpiOemTableIdFromProbe probe)
-  ] "A M I   ";
+  ] "ACRPRDCT";
 
   resolvedAcpiOemTableIdHex = firstNonNull [
     spoofCfg.acpiOemTableIdHex
     (facterLib.getAcpiOemTableIdHexFromProbe probe)
-  ] "0x20202020324B4445";
+  ] "0x5443445250524341";
 
   resolvedAcpiOemRevision = firstNonNull [
     spoofCfg.acpiOemRevision
     (facterLib.getAcpiOemRevisionFromProbe probe)
-  ] "0x00000002";
+  ] "0x01072009";
 
   resolvedAcpiCreatorId = firstNonNull [
     spoofCfg.acpiCreatorId
     (facterLib.getAcpiCreatorIdFromProbe probe)
-  ] "ACPI";
+  ] "AMI ";
 
   resolvedAcpiCreatorIdHex = firstNonNull [
     spoofCfg.acpiCreatorIdHex

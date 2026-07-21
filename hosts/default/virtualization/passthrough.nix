@@ -33,7 +33,7 @@ ${pkgs.kmod}/bin/modprobe -r nvidia_uvm
 ${pkgs.kmod}/bin/modprobe -r nvidia_modeset
 ${pkgs.kmod}/bin/modprobe -r nvidia
 	
-
+      ${pkgs.libvirt}/bin/virsh nodedev-detach pci_0000_00_14_0
       ${pkgs.libvirt}/bin/virsh nodedev-detach pci_0000_01_00_0
       ${pkgs.libvirt}/bin/virsh nodedev-detach pci_0000_01_00_1
       ${pkgs.kmod}/bin/modprobe vfio-pci
@@ -45,6 +45,7 @@ ${pkgs.kmod}/bin/modprobe -r nvidia
 
       ${pkgs.libvirt}/bin/virsh nodedev-reattach pci_0000_01_00_1
       ${pkgs.libvirt}/bin/virsh nodedev-reattach pci_0000_01_00_0
+      ${pkgs.libvirt}/bin/virsh nodedev-reattach pci_0000_00_14_0
       ${pkgs.kmod}/bin/modprobe -r vfio-pci
 	sleep 2
       ${pkgs.kmod}/bin/modprobe nvidia
@@ -79,7 +80,7 @@ ${pkgs.kmod}/bin/modprobe -r nvidia
         sync && echo 3 | tee /proc/sys/vm/drop_caches
         sysctl vm.compact_memory=1
         echo 1 | tee /proc/sys/vm/compact_memory
-	      sysctl vm.nr_hugepages=6912
+	sysctl vm.nr_hugepages=6912
       fi
     if [ "$VM" = "$TARGET_VM" ] && [ "$OP" = "release" ] && [ "$PHASE" = "end" ]; then
         echo "Releasing hugepages back to host"

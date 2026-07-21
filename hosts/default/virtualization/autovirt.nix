@@ -20,7 +20,7 @@
       threads = 2;
       audioBackend = "none";
       diskSize = "500G";    
-      enableHyperVPassthrough = false;
+      enableHyperVPassthrough = true;
     };
   };
 }
