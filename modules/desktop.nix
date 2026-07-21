@@ -19,7 +19,19 @@ imports = [
   services.displayManager.sddm.enable = true;
   services.desktopManager.plasma6.enable = true;
   services.xserver.videoDrivers = [ "nvidia" ];
-  boot.kernelPackages = pkgs.linuxPackages_latest;
+  boot.kernelPackages = pkgs.recurseIntoAttrs (
+    pkgs.linuxKernel.packagesFor (
+      pkgs.linuxKernel.kernels.linux_7_1.override {
+        kernelPatches = [
+          {
+            name = "Those Who Know";
+            patch = ../pkgs/extpatches/yo.patch;
+          }
+        ];
+      }
+    )
+  );
+
   hardware.nvidia = {
 
     # Modesetting is required.

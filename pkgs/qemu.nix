@@ -18,11 +18,19 @@
 let
   # Comprehensive realistic drive model collections (auto-select if not specified)
   ideModels = [
-    "Samsung SSD 870 EVO 1TB"
-    "Samsung SSD 980 500GB"
-    "Kingston A2000 500GB"
-    "WD Blue SN550 1TB"
-    "Crucial P5 Plus 500GB"
+    "Samsung SSD 970 EVO 1TB" "Samsung SSD 860 QVO 1TB"
+      "Samsung SSD 850 PRO 1TB" "Samsung SSD T7 Touch 1TB"
+      "Samsung SSD 840 EVO 1TB" "WD Blue SN570 NVMe SSD 1TB"
+      "WD Black SN850 NVMe SSD 1TB" "WD Green 1TB SSD"
+      "WD Blue 3D NAND 1TB SSD" "Crucial P3 1TB PCIe 3.0 3D NAND NVMe SSD"
+      "Seagate BarraCuda SSD 1TB" "Seagate FireCuda 520 SSD 1TB"
+      "Seagate IronWolf 110 SSD 1TB" "SanDisk Ultra 3D NAND SSD 1TB"
+      "Seagate Fast SSD 1TB" "Crucial MX500 1TB 3D NAND SSD"
+      "Crucial P5 Plus NVMe SSD 1TB" "Crucial BX500 1TB 3D NAND SSD"
+      "Crucial P3 1TB PCIe 3.0 3D NAND NVMe SSD"
+      "Kingston A2000 NVMe SSD 1TB" "Kingston KC2500 NVMe SSD 1TB"
+      "Kingston A400 SSD 1TB" "Kingston HyperX Savage SSD 1TB"
+      "SanDisk SSD PLUS 1TB" "SanDisk Ultra 3D 1TB NAND SSD"
   ];
 
   nvmeModels = [
@@ -34,11 +42,19 @@ let
   ];
 
   cdModels = [
-    "HL-DT-ST BD-RE WH16NS60"
-    "HL-DT-ST DVDRAM GH24NSC0"
-    "Pioneer BDR-XD07B"
-    "HP BD-RE BH30L"
-    "LG GH24NSD5"
+    "HL-DT-ST BD-RE WH16NS60" "HL-DT-ST DVDRAM GH24NSC0"
+      "HL-DT-ST BD-RE BH16NS40" "HL-DT-ST DVD+-RW GT80N"
+      "HL-DT-ST DVD-RAM GH22NS30" "HL-DT-ST DVD+RW GCA-4040N"
+      "Pioneer BDR-XD07B" "Pioneer DVR-221LBK" "Pioneer BDR-209DBK"
+      "Pioneer DVR-S21WBK" "Pioneer BDR-XD05B" "ASUS BW-16D1HT"
+      "ASUS DRW-24B1ST" "ASUS SDRW-08D2S-U" "ASUS BC-12D2HT"
+      "ASUS SBW-06D2X-U" "Samsung SH-224FB" "Samsung SE-506BB"
+      "Samsung SH-B123L" "Samsung SE-208GB" "Samsung SN-208DB"
+      "Sony NEC Optiarc AD-5280S" "Sony DRU-870S" "Sony BWU-500S"
+      "Sony NEC Optiarc AD-7261S" "Sony AD-7200S" "Lite-On iHAS124-14"
+      "Lite-On iHBS112-04" "Lite-On eTAU108" "Lite-On iHAS324-17"
+      "Lite-On eBAU108" "HP DVD1260i" "HP DVD640"
+      "HP BD-RE BH30L" "HP DVD Writer 300n" "HP DVD Writer 1265i"
   ];
 
   cfataModels = [
