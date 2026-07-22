@@ -51,7 +51,7 @@
     "nouveau.modeset=0"
     "idle=poll"
     "processor.max_cstate=1"
-
+    "kvm.ignore_msrs=0"
   ];
   boot.loader.systemd-boot.configurationLimit = 4;
   boot.loader.efi.canTouchEfiVariables = true;
