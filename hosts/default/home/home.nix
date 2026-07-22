@@ -102,7 +102,7 @@
 
     settings = {
       credential.helper = "manager";
-      credential.credentialStore = "gpg";
+      credential.credentialStore = "secretservice";
     };
   };
   programs.fastfetch = {
