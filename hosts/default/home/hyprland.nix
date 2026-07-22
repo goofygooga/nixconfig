@@ -17,11 +17,11 @@
   programs.kitty.enable = true;
   wayland.windowManager.hyprland.enable = true;
   wayland.windowManager.hyprland.extraConfig = ''
-        # Move windows with SUPER + left click
-        bindm = SUPER, mouse:272, movewindow
+    # Move windows with SUPER + left click
+    bindm = SUPER, mouse:272, movewindow
 
-        # Resize windows with SUPER + right click
-        bindm = SUPER, mouse:273, resizewindow
+    # Resize windows with SUPER + right click
+    bindm = SUPER, mouse:273, resizewindow
 
   '';
 
@@ -41,13 +41,16 @@
   };
   wayland.windowManager.hyprland.settings = {
     "$mod" = "SUPER";
+    cursor = {
+      no_warps = true;
+    };
     monitor = [
       "DP-1, 1920x1080@164.92, 0x0, 1"
     ];
     input = {
       sensitivity = -0.18;
       accel_profile = "flat";
-    };
+};
     "exec-once" = [
       "${pkgs.kdePackages.polkit-kde-agent-1}/libexec/polkit-kde-authentication-agent-1"
       "noctalia-shell"
@@ -76,7 +79,29 @@
       };
     };
     animations = {
-      enabled = false;
+      enabled = true;
+      bezier = "snap, 0.1, 1.0, 0.1, 1.0";
+
+      # Syntax: "NAME, ON/OFF (1/0), SPEED (deciseconds), CURVE [,STYLE]"
+      animation = [
+        "windows, 1, 2.5, snap, popin 80%" # Fast window open/close
+        "windowsIn, 1, 2.5, snap, popin 80%" # Fast window opening
+        "windowsOut, 1, 2, snap, popin 80%" # Ultra-fast window closing
+        "windowsMove, 1, 3, snap" # Snappy window moving/dragging
+
+        "layers, 1, 2.5, snap, fade" # Fast bars, launchers, & menus
+        "layersIn, 1, 2.5, snap, fade"
+        "layersOut, 1, 2, snap, fade"
+
+        "fade, 1, 2.5, snap" # Fast fading for all elements
+        "fadeIn, 1, 2.5, snap"
+        "fadeOut, 1, 2, snap"
+        "fadeSwitch, 1, 3, snap" # Fast fading on window focus switch
+        "fadeShadow, 1, 3, snap" # Snappy shadow rendering
+        "fadeDim, 1, 3, snap" # Snappy dimming of inactive windows
+
+        "workspaces, 1, 3, snap, slide" # Fast workspace switching
+      ];
     };
     bind = [
       "$mod, B, exec, firefox"
@@ -95,7 +120,11 @@
       "$mod SHIFT, F, fullscreen, 1"
       "CTRL ALT, Delete, exec, hyprctl dispatch exit"
       "$mod, space, togglefloating"
-    ]
+      "$mod, left, movefocus, l"
+      "$mod, right, movefocus, r"
+      "$mod, up, movefocus, u"
+      "$mod, down, movefocus, d"
+]
     ++ (
       # workspaces
       # binds $mod + [shift +] {1..9} to [move to] workspace {1..9}
