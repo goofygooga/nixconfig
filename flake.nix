@@ -4,12 +4,14 @@
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
     nixcord.url = "github:4evy/nixcord";
-    nixpkgs-stable.url = "github:nixos/nixpkgs/nixos-25.11"; # Add this stable source
     nix-flatpak.url = "github:gmodena/nix-flatpak";
     nixos-facter-modules.url = "github:numtide/nixos-facter-modules";
     home-manager.url = "github:nix-community/home-manager";
-    nix-cachyos-kernel.url = "github:xddxdd/nix-cachyos-kernel/release";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
+    noctalia = {
+      url = "github:noctalia-dev/noctalia/legacy-v4";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     chaotic.url = "github:chaotic-cx/nyx/nyxpkgs-unstable";
     autovirt = {
       url = "github:Scrut1ny/AutoVirt";
@@ -32,10 +34,8 @@
       home-manager,
       chaotic,
       grub2-themes,
-      nixpkgs-stable,
       nix-flatpak,
       autovirt,
-      nix-cachyos-kernel,
       ...
     }:
     let
@@ -56,7 +56,6 @@
           inherit self autovirt;
         };
       };
-
       packages = forAllSystems (
         system:
         let
@@ -67,21 +66,18 @@
           default = callPackage ./pkgs/probe.nix { };
           probe = callPackage ./pkgs/probe.nix { };
           deploy = callPackage ./pkgs/libvirt-xml.nix { };
-
           qemu-patched = callPackage ./pkgs/qemu.nix {
             inherit autovirt;
           };
-
           ovmf-patched = callPackage ./pkgs/ovmf.nix {
             inherit autovirt;
+            virt-firmware = pkgs.python3Packages.virt-firmware;
           };
-
           smbios-spoofer = callPackage ./pkgs/smbios-spoofer.nix { inherit autovirt; };
           utils = callPackage ./pkgs/utils.nix { inherit autovirt; };
           guest-scripts = callPackage ./pkgs/guest-scripts.nix { inherit autovirt; };
         }
       );
-
       devShells = forAllSystems (system: {
         default =
           let
@@ -101,10 +97,6 @@
         inherit system;
         specialArgs = {
           inherit inputs autovirt;
-          pkgs-stable = import nixpkgs-stable {
-            inherit system;
-            config.allowUnfree = true;
-          };
         };
         modules = [
           nixos-facter-modules.nixosModules.facter
@@ -115,24 +107,14 @@
           self.nixosModules.default
           ./modules/boot.nix
           ./hosts/default/configuration.nix
-
           {
             home-manager.useGlobalPkgs = true;
             home-manager.extraSpecialArgs = {
-              inherit inputs autovirt;
+              inherit inputs;
             };
             home-manager.useUserPackages = true;
             home-manager.users.lordofchaos = import ./hosts/default/home/home.nix;
           }
-
-          (
-            { pkgs, lib, ... }:
-            {
-              nixpkgs.overlays = [
-                nix-cachyos-kernel.overlays.pinned
-              ];
-            }
-          )
         ];
       };
     };

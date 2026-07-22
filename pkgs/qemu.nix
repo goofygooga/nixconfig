@@ -108,11 +108,20 @@ in
 (qemu.override {
   hostCpuTargets = [ "x86_64-softmmu" ];
   smbdSupport = false;
+  spiceSupport = true;
+  usbredirSupport = true;
 }).overrideAttrs
   (old: rec {
     pname = "barely-metal-qemu";
     version = "11.0.2";
-
+    configureFlags = (old.configureFlags or [ ]) ++ [
+      "--target-list=x86_64-softmmu"
+      "--enable-libusb"
+      "--enable-usb-redir"
+      "--enable-spice"
+      "--enable-spice-protocol"
+      "--disable-werror"
+    ];
     src = fetchurl {
       url = "https://download.qemu.org/qemu-${version}.tar.xz";
       hash = "sha256-N0X26oji6H/g3IOLKx1OCncL9I4BodWhhoQqH/92zPU=";

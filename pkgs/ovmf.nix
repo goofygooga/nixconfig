@@ -23,6 +23,7 @@
   bc,
   util-linux,
   fetchgit,
+  virt-firmware,
 }:
 
 let
@@ -54,6 +55,7 @@ stdenv.mkDerivation {
     util-linux
     nasm
     acpica-tools
+    virt-firmware
   ];
 
   hardeningDisable = [
@@ -65,14 +67,14 @@ stdenv.mkDerivation {
   env.GCC_BIN = stdenv.cc.targetPrefix;
   env.GCC_X64_PREFIX = stdenv.cc.targetPrefix;
 
-  prePatch = ''
-    rm -rf BaseTools
-    ln -sv ${buildPackages.edk2}/BaseTools BaseTools
-  '';
+  preBuild = ''
+  make -C BaseTools -j$NIX_BUILD_CORES
+'';
 
   postPatch = ''
     patch -p1 < ${patchFile}
-
+    find BaseTools/BinWrappers -type f -exec sed -i \
+    "s|/usr/bin/env bash|${stdenv.shell}|g" {} +
     # spoof_smbios: SMBIOS Type 0 (BIOS Information) strings
     sed -i \
       -e 's@VendStr = L"unknown";@VendStr = L"${biosVendor}";@' \
@@ -157,7 +159,10 @@ stdenv.mkDerivation {
   configurePhase = ''
     runHook preConfigure
     export WORKSPACE="$PWD"
-    . ${buildPackages.edk2}/edksetup.sh BaseTools
+    export EDK_TOOLS_PATH="$PWD/BaseTools"
+    export CONF_PATH="$PWD/Conf"
+
+    source ./edksetup.sh BaseTools
     runHook postConfigure
   '';
 
@@ -186,8 +191,11 @@ stdenv.mkDerivation {
 
     mkdir -p $out/FV
     cp -v Build/OvmfX64/RELEASE_GCC/FV/OVMF_CODE.fd $out/FV/
-    cp -v Build/OvmfX64/RELEASE_GCC/FV/OVMF_VARS.fd $out/FV/
     cp -v Build/OvmfX64/RELEASE_GCC/FV/OVMF.fd $out/FV/
+    virt-fw-vars \
+    --input Build/OvmfX64/RELEASE_GCC/FV/OVMF_VARS.fd \
+    --output $out/FV/OVMF_VARS.fd \
+    --secure-boot
 
     runHook postInstall
   '';

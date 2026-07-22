@@ -40,9 +40,9 @@
     "nix-command"
     "flakes"
   ];
-  nix.settings.substituters = [ "https://attic.xuyh0120.win/lantian" ];
-  nix.settings.trusted-public-keys = [ "lantian:EeAUQ+W+6r7EtwnmYjeVwx5kOGEBpjlBfPlzGlTNvHc=" ];
-  nix.settings.trusted-substituters = [ "https://attic.xuyh0120.win/lantian" ];
+  nix.settings.substituters = [ "https://attic.xuyh0120.win/lantian" "https://noctalia.cachix.org" ];
+  nix.settings.trusted-public-keys = [ "lantian:EeAUQ+W+6r7EtwnmYjeVwx5kOGEBpjlBfPlzGlTNvHc=" "noctalia.cachix.org-1:pCOR47nnMEo5thcxNDtzWpOxNFQsBRglJzxWPp3dkU4=" ];
+  nix.settings.trusted-substituters = [ "https://attic.xuyh0120.win/lantian" "https://noctalia.cachix.org" ];
 
   time.timeZone = "America/Toronto";
 
@@ -54,11 +54,6 @@
   };
   services.input-remapper = {
     enable = true;
-    package =
-      (import inputs.nixpkgs-stable {
-        system = pkgs.stdenv.hostPlatform.system;
-        config.allowUnfree = true;
-      }).input-remapper;
   };
 
   hardware.uinput.enable = true;
@@ -122,7 +117,6 @@
     # USB subsystem access
     SUBSYSTEMS=="usb", ATTRS{idVendor}=="3151", ATTRS{idProduct}=="502d", MODE="0666", TAG+="uaccess"
   '';
-
   services.openssh.enable = true;
   networking.firewall.enable = true;
   system.stateVersion = "26.05";

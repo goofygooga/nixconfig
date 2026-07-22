@@ -11,8 +11,35 @@
   home.homeDirectory = "/home/lordofchaos";
   home.stateVersion = "26.11";
 
-  imports = [ ./discord.nix ];
-
+  imports = [ 
+    ./discord.nix 
+    ./hyprland.nix
+    inputs.noctalia.homeModules.default
+   ];
+  fonts.fontconfig.enable = true;
+  dconf.settings = {
+    "org/gnome/desktop/interface" = {
+      monospace-font-name = "Adwaita Mono 11";
+       icon-theme = "Papirus-Dark";
+       color-scheme = "prefer-dark";
+    };
+  };
+  gtk = {
+    enable = true;
+    theme = {
+      package = pkgs.gnome-themes-extra;
+      name = "Adwaita-dark";
+    };
+    iconTheme = {
+      name = "Papirus-Dark";
+      package = pkgs.papirus-icon-theme;
+    };
+    cursorTheme = {
+      package = pkgs.bibata-cursors;
+      name = "Bibata-Modern-Ice";
+      size = 20;
+    };
+  };
   home.packages = with pkgs; [
     hollywood
     btop
@@ -25,9 +52,7 @@
     tree
     nerd-fonts.jetbrains-mono
     tmux
-    #heroic
-    #    gamescope
-    #    gamemode
+    adwaita-fonts
   ];
   programs.vscode = {
     enable = true;
@@ -186,6 +211,10 @@
       ];
     };
   };
+home.sessionVariables = {
+  XCURSOR_SIZE = "20";
+  HYPRCURSOR_SIZE = "20";
+};
 
   home.file = {
     # ".screenrc".source = ./dotfiles/screenrc;

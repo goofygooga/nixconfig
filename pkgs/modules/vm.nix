@@ -113,6 +113,7 @@ let
 
   patchedOvmf = pkgs.callPackage ../ovmf.nix {
     inherit autovirt;
+    virt-firmware = pkgs.python3Packages.virt-firmware;
     biosVendor = resolvedBiosVendor;
     biosVersion = resolvedBiosVersion;
     biosDate = resolvedBiosDate;
