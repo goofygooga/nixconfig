@@ -10,7 +10,7 @@
 }:
 
 writeShellApplication {
-  name = "barely-metal-deploy";
+  name = "nixvirt-deploy";
 
   runtimeInputs = [
     coreutils
@@ -26,7 +26,7 @@ writeShellApplication {
 
     usage() {
       cat <<EOF
-    Usage: barely-metal-deploy [OPTIONS]
+    Usage: nixvirt-deploy [OPTIONS]
 
     Generate and register a libvirt VM domain with full anti-detection settings.
 
@@ -75,7 +75,7 @@ writeShellApplication {
     }
 
     # Defaults
-    DOMAIN_NAME="BarelyMetal"
+    DOMAIN_NAME="nixvirt"
     MEMORY=16384
     CORES=4
     THREADS=2
@@ -226,7 +226,7 @@ writeShellApplication {
       --check "disk_size=off"
 
       # Network — e1000e with spoofed MAC
-      --network "network=default,model=e1000e,mac=$MAC"
+      --network "network=default,model=rtl8125,mac=$MAC"
 
       # USB input devices (instead of PS/2)
       --input "mouse,bus=usb"

@@ -1,6 +1,6 @@
 {
   self,
-  autovirt,
+  AutoVirt,
 }:
 
 {
@@ -11,7 +11,7 @@
 }:
 
 let
-  cfg = config.barelyMetal;
+  cfg = config.nixvirt;
   vmCfg = cfg.vm;
   spoofCfg = cfg.spoofing;
 
@@ -97,7 +97,7 @@ let
 
   cpuLower = lib.toLower resolvedCpu;
   patchedQemu = pkgs.callPackage ../qemu.nix {
-    inherit autovirt;
+    inherit AutoVirt;
     acpiOemId = resolvedAcpiOemId;
     acpiOemTableId = resolvedAcpiOemTableId;
     acpiCreatorId = resolvedAcpiCreatorId;
@@ -112,7 +112,7 @@ let
   };
 
   patchedOvmf = pkgs.callPackage ../ovmf.nix {
-    inherit autovirt;
+    inherit AutoVirt;
     virt-firmware = pkgs.python3Packages.virt-firmware;
     biosVendor = resolvedBiosVendor;
     biosVersion = resolvedBiosVersion;
@@ -174,26 +174,26 @@ let
         done
       '';
 
-  smbiosSpoofer = pkgs.callPackage ../smbios-spoofer.nix { inherit autovirt; };
-  barelyMetalUtils = pkgs.callPackage ../utils.nix { inherit autovirt; };
-  barelyMetalProbe = pkgs.callPackage ../probe.nix { };
-  barelyMetalDeploy = pkgs.callPackage ../libvirt-xml.nix { };
-  guestScripts = pkgs.callPackage ../guest-scripts.nix { inherit autovirt; };
+  smbiosSpoofer = pkgs.callPackage ../smbios-spoofer.nix { inherit AutoVirt; };
+  nixvirtUtils = pkgs.callPackage ../utils.nix { inherit AutoVirt; };
+  nixvirtProbe = pkgs.callPackage ../probe.nix { };
+  nixvirtDeploy = pkgs.callPackage ../libvirt-xml.nix { };
+  guestScripts = pkgs.callPackage ../guest-scripts.nix { inherit AutoVirt; };
 
   # Guest scripts ISO (built by Nix, copied to stable path at activation)
   guestScriptsIso =
-    pkgs.runCommand "barely-metal-guest-scripts.iso"
+    pkgs.runCommand "nixvirt-guest-scripts.iso"
       {
         nativeBuildInputs = [ pkgs.cdrkit ];
       }
       ''
         mkisofs -o "$out" -V "BM_SCRIPTS" -R -J \
-          "${guestScripts}/share/barely-metal/guest-scripts"
+          "${guestScripts}/share/nixvirt/guest-scripts"
       '';
 
   guestScriptsIsoPath = "${stateDir}/firmware/guest-scripts.iso";
 
-  stateDir = "/var/lib/barely-metal";
+  stateDir = "/var/lib/nixvirt";
 
   # Stable paths for ACPI tables (copied from Nix store at activation time)
   acpiTableDir = "${stateDir}/firmware/acpi";
@@ -205,23 +205,19 @@ let
         src = t;
         dst = "${acpiTableDir}/user_${toString i}.aml";
       }) vmCfg.acpiTables;
-      batteryTable = lib.optional vmCfg.useFakeBattery {
-        src = "${compiledAcpiTables}/fake_battery.aml";
-        dst = "${acpiTableDir}/fake_battery.aml";
-      };
       devicesTable = lib.optional vmCfg.useSpoofedDevices {
         src = "${compiledAcpiTables}/spoofed_devices.aml";
         dst = "${acpiTableDir}/spoofed_devices.aml";
       };
     in
-    userTables ++ batteryTable ++ devicesTable;
+    userTables ++ devicesTable;
 
   # Build the deploy wrapper script with all resolved values baked in.
   # All interpolated option values are run through lib.escapeShellArg so that
   # unusual (but valid) paths/strings can't break the generated script or be
   # interpreted as extra shell arguments.
-  deployWrapper = pkgs.writeShellScriptBin "barely-metal-deploy-vm" ''
-    exec ${lib.escapeShellArg "${barelyMetalDeploy}/bin/barely-metal-deploy"} \
+  deployWrapper = pkgs.writeShellScriptBin "nixvirt-deploy-vm" ''
+    exec ${lib.escapeShellArg "${nixvirtDeploy}/bin/nixvirt-deploy"} \
       --qemu ${lib.escapeShellArg "${stateDir}/bin/qemu-system-x86_64"} \
       --ovmf-code ${lib.escapeShellArg "${stateDir}/firmware/OVMF_CODE.fd"} \
       --ovmf-vars ${lib.escapeShellArg "${stateDir}/firmware/OVMF_VARS.fd"} \
@@ -252,7 +248,7 @@ let
   # OEM strings) if the DefinitionBlock header in either .dsl file doesn't
   # match the expected pattern — e.g. after a guest-scripts source update.
   compiledAcpiTables =
-    pkgs.runCommand "barely-metal-acpi-tables"
+    pkgs.runCommand "nixvirt-acpi-tables"
       {
         nativeBuildInputs = [
           pkgs.acpica-tools
@@ -286,32 +282,30 @@ let
           iasl -p "$out/$name" "$patched"
         }
 
-        compile_dsl "${guestScripts}/share/barely-metal/acpi/fake_battery.dsl" "fake_battery"
-        compile_dsl "${guestScripts}/share/barely-metal/acpi/spoofed_devices.dsl" "spoofed_devices"
+        compile_dsl "${guestScripts}/share/nixvirt/acpi/spoofed_devices.dsl" "spoofed_devices"
       '';
 
-  # Resolve ACPI tables: user-specified + bundled fake battery + bundled spoofed devices
+  # Resolve ACPI tables: user-specified + bundled spoofed devices
   resolvedAcpiTables =
     vmCfg.acpiTables
-    ++ lib.optional vmCfg.useFakeBattery "${compiledAcpiTables}/fake_battery.aml"
     ++ lib.optional vmCfg.useSpoofedDevices "${compiledAcpiTables}/spoofed_devices.aml";
 in
 {
-  options.barelyMetal = {
-    enable = lib.mkEnableOption "BarelyMetal anti-detection virtualization";
+  options.nixvirt = {
+    enable = lib.mkEnableOption "nixvirt anti-detection virtualization";
 
     probeData = lib.mkOption {
       type = lib.types.attrsOf lib.types.anything;
       default = { };
       description = ''
         Hardware probe data as a Nix attrset. Generate the JSON with:
-          sudo barely-metal-probe -o probe.json
+          sudo nixvirt-probe -o probe.json
 
         Then pass it however you like:
-          barelyMetal.probeData = builtins.fromJSON (builtins.readFile ./probe.json);
+          nixvirt.probeData = builtins.fromJSON (builtins.readFile ./probe.json);
 
         Or from sops-nix:
-          barelyMetal.probeData = builtins.fromJSON config.sops.placeholder."probe";
+          nixvirt.probeData = builtins.fromJSON config.sops.placeholder."probe";
 
         Resolution order: manual spoofing override > probeData > nix-facter > defaults.
       '';
@@ -544,11 +538,6 @@ in
         type = lib.types.listOf lib.types.path;
         default = [ ];
       };
-      useFakeBattery = lib.mkOption {
-        type = lib.types.bool;
-        default = facterLib.hasBatteryFromProbe probe;
-        description = "Include bundled fake battery ACPI SSDT. Auto-enabled when probe detects a battery.";
-      };
       useSpoofedDevices = lib.mkOption {
         type = lib.types.bool;
         default = true;
@@ -563,7 +552,7 @@ in
     installGuestScripts = lib.mkOption {
       type = lib.types.bool;
       default = true;
-      description = "Install Windows guest anti-detection scripts to /share/barely-metal/.";
+      description = "Install Windows guest anti-detection scripts";
     };
 
     _internal = lib.mkOption {
@@ -576,12 +565,12 @@ in
 
   config = lib.mkIf cfg.enable {
     warnings = lib.optional (!hasProbe && !hasFacter) ''
-      barelyMetal: No hardware data source configured.
+      nixvirt: No hardware data source configured.
       All spoofing values will use generic defaults — your VM will NOT match your host.
 
       Generate a probe file:
-        sudo barely-metal-probe -o probe.json
-      Then: barelyMetal.probeData = builtins.fromJSON (builtins.readFile ./probe.json);
+        sudo nixvirt-probe -o probe.json
+      Then: nixvirt.probeData = builtins.fromJSON (builtins.readFile ./probe.json);
     '';
 
     # User group membership
@@ -626,20 +615,19 @@ in
     environment.systemPackages = [
       patchedQemu
       smbiosSpoofer
-      barelyMetalProbe
+      nixvirtProbe
       deployWrapper
       pkgs.swtpm
       pkgs.virt-manager
     ]
-    ++ lib.optional cfg.installUtilities barelyMetalUtils
+    ++ lib.optional cfg.installUtilities nixvirtUtils
     ++ lib.optional cfg.installGuestScripts guestScripts;
 
     systemd.tmpfiles.rules = [
-      "d ${stateDir} 0750 root root -"
-      "d ${stateDir}/firmware 0750 root root -"
+      "d ${stateDir} 0750 root qemu -"
     ];
 
-    system.activationScripts.barelyMetal = {
+    system.activationScripts.nixvirt = {
       text =
         let
           virtFwVars = pkgs.python3Packages.virt-firmware or null;
@@ -664,7 +652,7 @@ in
           ${lib.optionalString spoofCfg.generateSmbiosBin ''
             if [ -f /sys/firmware/dmi/tables/smbios_entry_point ] && [ -f /sys/firmware/dmi/tables/DMI ]; then
               cd ${stateDir}/firmware
-              ${smbiosSpoofer}/bin/barely-metal-smbios-spoofer || echo "Warning: SMBIOS spoofer failed"
+              ${smbiosSpoofer}/bin/nixvirt-smbios-spoofer || echo "Warning: SMBIOS spoofer failed"
               if [ -f smbios.bin ]; then
                 chmod 644 smbios.bin
               fi
@@ -762,7 +750,7 @@ in
     };
 
     # Libvirt network anti-fingerprinting
-    system.activationScripts.barelyMetalNetwork = lib.mkIf cfg.network.randomizeMac {
+    system.activationScripts.nixvirtNetwork = lib.mkIf cfg.network.randomizeMac {
       text = ''
         NETXML="/var/lib/libvirt/network/default.xml"
         if [ -f "$NETXML" ]; then
@@ -775,14 +763,14 @@ in
       '';
     };
 
-    barelyMetal._internal = {
+    nixvirt._internal = {
       qemuPackage = patchedQemu;
       ovmfPackage = patchedOvmf;
       smbiosBinPath = "${stateDir}/firmware/smbios.bin";
       ovmfCodePath = "${stateDir}/firmware/OVMF_CODE.fd";
       ovmfVarsPath = "${stateDir}/firmware/OVMF_VARS.fd";
       firmwareDir = "${stateDir}/firmware";
-      autovirtSrc = autovirt;
+      nixvirtSrc = AutoVirt;
       inherit resolvedCpu;
     };
   };

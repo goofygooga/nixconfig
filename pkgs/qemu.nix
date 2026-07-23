@@ -1,7 +1,7 @@
 {
   lib,
   qemu,
-  autovirt,
+  AutoVirt,
   fetchurl,
   acpiOemId ? "ACRSYS",
   acpiOemTableId ? "ACRPRDCT",
@@ -112,7 +112,7 @@ in
   usbredirSupport = true;
 }).overrideAttrs
   (old: rec {
-    pname = "barely-metal-qemu";
+    pname = "patched-qemu";
     version = "11.0.2";
     configureFlags = (old.configureFlags or [ ]) ++ [
       "--target-list=x86_64-softmmu"
@@ -121,14 +121,13 @@ in
       "--enable-spice"
       "--enable-spice-protocol"
       "--disable-werror"
-      "--disable-docs"
     ];
     src = fetchurl {
       url = "https://download.qemu.org/qemu-${version}.tar.xz";
       hash = "sha256-N0X26oji6H/g3IOLKx1OCncL9I4BodWhhoQqH/92zPU=";
     };
     patches = (old.patches or [ ]) ++ [
-      "${autovirt}/patches/QEMU/Intel-v11.0.2.patch"
+      "${AutoVirt}/patches/QEMU/Intel-v11.0.2.patch"
       ./extpatches/qemu-rtl8125-rel.patch
     ];
 
@@ -223,7 +222,6 @@ in
         done
       ''}
     '';
-    outputs = [ "out" ];
 
 
     postInstall = (old.postInstall or "") + ''
@@ -231,7 +229,7 @@ in
     '';
 
     meta = (old.meta or { }) // {
-      description = "QEMU with comprehensive anti-VM-detection patches (BarelyMetal/AutoVirt)";
+      description = "QEMU patched type shi";
       mainProgram = "qemu-system-x86_64";
     };
   })

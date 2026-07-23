@@ -2,7 +2,7 @@
   lib,
   stdenv,
   buildPackages,
-  autovirt,
+  AutoVirt,
   edk2,
   biosVendor ? "American Megatrends Inc.",
   biosVersion ? "R01-A4",
@@ -28,13 +28,13 @@
 
 let
   cpuLower = "intel";
-  patchFile = "${autovirt}/patches/EDK2/Intel-edk2-stable202605.patch";
+  patchFile = "${AutoVirt}/patches/EDK2/Intel-edk2-stable202605.patch";
   pythonEnv = buildPackages.python3.withPackages (ps: [ ps.distlib ]);
   targetArch = "X64";
 in
 stdenv.mkDerivation {
-  pname = "barely-metal-ovmf";
-  version = "202605-barely-metal";
+  pname = "ovmf-patched";
+  version = "202605";
 
   # Sourced from nixpkgs' own edk2 package (edk2.src) rather than a
   # separately pinned flake input — see note in flake.nix history: the
@@ -210,8 +210,8 @@ stdenv.mkDerivation {
   };
 
   meta = {
-    description = "OVMF/EDK2 firmware with comprehensive anti-VM-detection patches (BarelyMetal/AutoVirt)";
-    homepage = "https://github.com/Scrut1ny/AutoVirt";
+    description = "OVMF/EDK2 nix patched using nixvirt";
+    homepage = "https://github.com/Scrut1ny/nixvirt";
     license = lib.licenses.bsd2;
     platforms = [ "x86_64-linux" ];
   };

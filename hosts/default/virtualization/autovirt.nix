@@ -7,7 +7,7 @@
 {
   imports = [ inputs.nixos-facter-modules.nixosModules.facter ];
   facter.reportPath = ./facter.json;
-  barelyMetal = {
+  nixvirt = {
     enable = true;
 
     probeData = builtins.fromJSON (builtins.readFile ./probe.json);

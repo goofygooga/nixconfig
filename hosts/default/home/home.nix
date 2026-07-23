@@ -11,17 +11,17 @@
   home.homeDirectory = "/home/lordofchaos";
   home.stateVersion = "26.11";
 
-  imports = [ 
-    ./discord.nix 
+  imports = [
+    ./discord.nix
     ./hyprland.nix
     inputs.noctalia.homeModules.default
-   ];
+  ];
   fonts.fontconfig.enable = true;
   dconf.settings = {
     "org/gnome/desktop/interface" = {
       monospace-font-name = "Adwaita Mono 11";
-       icon-theme = "Papirus-Dark";
-       color-scheme = "prefer-dark";
+      icon-theme = "Papirus-Dark";
+      color-scheme = "prefer-dark";
     };
   };
   gtk = {
@@ -56,7 +56,7 @@
   ];
   programs.vscode = {
     enable = true;
-    extensions = with pkgs.vscode-extensions; [
+    profiles.default.extensions = with pkgs.vscode-extensions; [
       dracula-theme.theme-dracula
       anthropic.claude-code
       yzhang.markdown-all-in-one
@@ -65,6 +65,7 @@
   programs.neovim.enable = true;
   programs.alacritty = {
     enable = true;
+    package = pkgs.alacritty_git;
     settings = {
       font = {
         size = 12;
@@ -95,15 +96,17 @@
   programs.neovim.plugins = [
     pkgs.vimPlugins.LazyVim
   ];
-  programs.git-credential-oauth.enable = true;
+  programs.git-credential-oauth.enable = false;
   programs.git = {
     enable = true;
-    userName = "Scorcher";
+    userName = "scorcher";
     userEmail = "harrypotterr1233@gmail.com";
 
     settings = {
-      credential.helper = "manager";
-      credential.credentialStore =  "${pkgs.git.override { withLibsecret = true; }}/bin/git-credential-libsecret";
+      credential = {
+        helper = "${pkgs.git-credential-manager}/bin/git-credential-manager";
+        credentialStore = "secretservice";
+      };
     };
   };
   programs.fastfetch = {
@@ -212,10 +215,10 @@
       ];
     };
   };
-home.sessionVariables = {
-  XCURSOR_SIZE = "20";
-  HYPRCURSOR_SIZE = "20";
-};
+  home.sessionVariables = {
+    XCURSOR_SIZE = "20";
+    HYPRCURSOR_SIZE = "20";
+  };
 
   home.file = {
     # ".screenrc".source = ./dotfiles/screenrc;

@@ -1,12 +1,12 @@
 {
   lib,
   python3,
-  autovirt,
+  AutoVirt,
   makeWrapper,
 }:
 
 python3.pkgs.buildPythonApplication {
-  pname = "barely-metal-smbios-spoofer";
+  pname = "nixvirt-smbios-spoofer";
   version = "1.0.0";
   format = "other";
 
@@ -15,16 +15,16 @@ python3.pkgs.buildPythonApplication {
   nativeBuildInputs = [ makeWrapper ];
 
   installPhase = ''
-    mkdir -p $out/bin $out/share/barely-metal
-    cp ${autovirt}/resources/scripts/Linux/SMBIOS.py $out/share/barely-metal/smbios_spoofer_cli.py
-    makeWrapper ${python3}/bin/python3 $out/bin/barely-metal-smbios-spoofer \
-      --add-flags "$out/share/barely-metal/smbios_spoofer_cli.py"
+    mkdir -p $out/bin $out/share/nixvirt
+    cp ${AutoVirt}/resources/scripts/Linux/SMBIOS.py $out/share/nixvirt/smbios_spoofer_cli.py
+    makeWrapper ${python3}/bin/python3 $out/bin/nixvirt-smbios-spoofer \
+      --add-flags "$out/share/nixvirt/smbios_spoofer_cli.py"
   '';
 
   meta = {
     description = "Generate spoofed SMBIOS tables for QEMU anti-detection";
     license = lib.licenses.mit;
     platforms = [ "x86_64-linux" ];
-    mainProgram = "barely-metal-smbios-spoofer";
+    mainProgram = "nixvirt-smbios-spoofer";
   };
 }

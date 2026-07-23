@@ -19,7 +19,70 @@
     "com.dec05eba.gpu_screen_recorder"
     "com.surfshark.Surfshark"
   ];
-  programs.localsend.enable = true;
+  programs.nix-ld = {
+    enable = true;
+    
+    # Common shared libraries required by dynamic binaries
+    libraries = with pkgs; [
+      # Core C/C++ runtime
+      stdenv.cc.cc.lib
+      zlib
+      glib
+      libffi
+      openssl
+      curl
+
+      # Graphics / Rendering
+      libGL
+      vulkan-loader
+      mesa
+
+      # System & Input
+      systemd # for libudev
+      libinput
+      libusb1
+
+      # X11 / Wayland
+      libx11
+      libxcursor
+      libxrandr
+      libxi
+      libxext
+      libxrender
+      libxfixes
+      wayland
+
+      # Audio & Fonts
+      fontconfig
+      freetype
+      alsa-lib
+cairo
+gdk-pixbuf
+gtk3
+#libXscrnSaver
+mesa
+dbus
+nss
+nspr
+cups
+atk
+pango
+glib
+libdrm
+libgbm
+libGL
+libva
+vulkan-loader
+alsa-lib
+pipewire
+libogg
+libvorbis
+zlib
+util-linux
+libudev0-shim
+    ];
+  };  
+programs.localsend.enable = true;
   users.defaultUserShell = pkgs.zsh; # Example: zsh, fish, nushell
   environment.shells = [ pkgs.zsh ];
   environment.systemPackages = with pkgs; [

@@ -81,7 +81,6 @@ rec {
   getAcpiCreatorRevisionFromProbe = probe: (probe.acpi or { }).creator_revision or null;
   getAcpiPmProfileFromProbe = probe: (probe.acpi or { }).pm_profile or null;
 
-  hasBatteryFromProbe = probe: (probe.battery or { }).present or false;
 
   # --- Unified resolver: probe > facter > manual > default ---
   # First non-null wins.

@@ -12,7 +12,6 @@
     grimblast
     nwg-look
     papirus-icon-theme
-    alacritty
   ];
   programs.kitty.enable = true;
   wayland.windowManager.hyprland.enable = true;
@@ -50,7 +49,7 @@
     input = {
       sensitivity = -0.18;
       accel_profile = "flat";
-};
+    };
     "exec-once" = [
       "${pkgs.kdePackages.polkit-kde-agent-1}/libexec/polkit-kde-authentication-agent-1"
       "noctalia-shell"
@@ -116,7 +115,7 @@
       ", XF86AudioLowerVolume, exec, noctalia-shell ipc call volume decrease"
       ", XF86AudioMute, exec, noctalia-shell ipc call volume muteOutput"
       "$mod, Q, killactive"
-      "$mod, F, fullscreen, 1"
+      "$mod, F, fullscreen, 0"
       "$mod SHIFT, F, fullscreen, 1"
       "CTRL ALT, Delete, exec, hyprctl dispatch exit"
       "$mod, space, togglefloating"
@@ -124,7 +123,11 @@
       "$mod, right, movefocus, r"
       "$mod, up, movefocus, u"
       "$mod, down, movefocus, d"
-]
+      "$mod SHIFT, left,  movewindow, l"
+      "$mod SHIFT, right, movewindow, r"
+      "$mod SHIFT, up,    movewindow, u"
+      "$mod SHIFT, down,  movewindow, d"
+    ]
     ++ (
       # workspaces
       # binds $mod + [shift +] {1..9} to [move to] workspace {1..9}

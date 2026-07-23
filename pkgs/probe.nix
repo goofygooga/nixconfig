@@ -11,7 +11,7 @@
 }:
 
 writeShellApplication {
-  name = "barely-metal-probe";
+  name = "nixvirt-probe";
 
   runtimeInputs = [
     coreutils
@@ -27,8 +27,8 @@ writeShellApplication {
     set -euo pipefail
 
     if [ "$(id -u)" -ne 0 ]; then
-      echo "Error: barely-metal-probe must be run as root (needs access to ACPI tables and DMI)" >&2
-      echo "Usage: sudo barely-metal-probe [-o /path/to/probe.json]" >&2
+      echo "Error: nixvirt-probe must be run as root (needs access to ACPI tables and DMI)" >&2
+      echo "Usage: sudo nixvirt-probe [-o /path/to/probe.json]" >&2
       exit 1
     fi
 
@@ -37,10 +37,10 @@ writeShellApplication {
       case "$1" in
         -o|--output) OUTPUT="$2"; shift 2 ;;
         -h|--help)
-          echo "Usage: sudo barely-metal-probe [-o /path/to/probe.json]"
+          echo "Usage: sudo nixvirt-probe [-o /path/to/probe.json]"
           echo ""
           echo "Probes host hardware (ACPI, DMI/SMBIOS, CPU) and outputs JSON."
-          echo "The JSON file is consumed by the BarelyMetal NixOS module to"
+          echo "The JSON file is consumed by the NixVirt module to"
           echo "build QEMU and OVMF with your host's real hardware identifiers."
           echo ""
           echo "Options:"
@@ -48,7 +48,7 @@ writeShellApplication {
           echo ""
           echo "The output can be stored as-is or encrypted with sops/agenix."
           echo "Then reference it in your NixOS config:"
-          echo "  barelyMetal.probeFile = ./probe.json;"
+          echo "  nixvirt.probeFile = ./probe.json;"
           exit 0 ;;
         *) echo "Unknown option: $1" >&2; exit 1 ;;
       esac
@@ -187,13 +187,13 @@ writeShellApplication {
         LOGO_PATH="$OUTPUT_DIR/boot-logo.bmp"
         cp "$BGRT_IMAGE" "$LOGO_PATH"
         echo "Boot logo saved to: $LOGO_PATH" >&2
-        echo "Add to your NixOS config:  barelyMetal.spoofing.bootLogo = ./boot-logo.bmp;" >&2
+        echo "Add to your NixOS config:  nixvirt.spoofing.bootLogo = ./boot-logo.bmp;" >&2
       else
         echo "Warning: No BGRT boot logo found at $BGRT_IMAGE" >&2
       fi
 
       echo "Probe written to: $OUTPUT" >&2
-      echo "Add to your NixOS config:  barelyMetal.probeData = builtins.fromJSON (builtins.readFile ./$OUTPUT);" >&2
+      echo "Add to your NixOS config:  nixvirt.probeData = builtins.fromJSON (builtins.readFile ./$OUTPUT);" >&2
     else
       echo "$JSON"
     fi

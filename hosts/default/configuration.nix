@@ -40,9 +40,9 @@
     "nix-command"
     "flakes"
   ];
-  nix.settings.substituters = [ "https://attic.xuyh0120.win/lantian" "https://noctalia.cachix.org" ];
-  nix.settings.trusted-public-keys = [ "lantian:EeAUQ+W+6r7EtwnmYjeVwx5kOGEBpjlBfPlzGlTNvHc=" "noctalia.cachix.org-1:pCOR47nnMEo5thcxNDtzWpOxNFQsBRglJzxWPp3dkU4=" ];
-  nix.settings.trusted-substituters = [ "https://attic.xuyh0120.win/lantian" "https://noctalia.cachix.org" ];
+  nix.settings.substituters = [ "https://noctalia.cachix.org" ];
+  nix.settings.trusted-public-keys = [ "noctalia.cachix.org-1:pCOR47nnMEo5thcxNDtzWpOxNFQsBRglJzxWPp3dkU4=" ];
+  nix.settings.trusted-substituters = [ "https://noctalia.cachix.org" ];
 
   time.timeZone = "America/Toronto";
 
@@ -99,16 +99,10 @@
     ];
   };
   services.udisks2.enable = true;
-  # Install firefox.
   programs.firefox.enable = true;
   programs.firefox.package = pkgs.firefox-bin;
   programs.gamescope.enable = true;
   programs.gamemode.enable = true;
-  # Allow unfree packages
-  #  nixpkgs.config.allowUnfree = true;
-
-  # List packages installed in system profile. To search, run:
-  # $ nix search wget
 
   services.udev.extraRules = ''
     # HIDRAW access for browser configuration (VIA / WebHID)
@@ -117,6 +111,19 @@
     # USB subsystem access
     SUBSYSTEMS=="usb", ATTRS{idVendor}=="3151", ATTRS{idProduct}=="502d", MODE="0666", TAG+="uaccess"
   '';
+   systemd.services.xpad-new-id = {
+    description = "Register extra USB ID with xpad driver";
+    wantedBy = [ "multi-user.target" ];
+    after = [ "systemd-udevd.service" ];
+    unitConfig.ConditionPathExists = "/sys/bus/usb/drivers/xpad";
+    serviceConfig = {
+      Type = "oneshot";
+      RemainAfterExit = true;
+      ExecStart = pkgs.writeShellScript "xpad-new-id" ''
+        echo '0x1b1c 0x3a03' > /sys/bus/usb/drivers/xpad/new_id
+      '';
+    };
+  };
   services.openssh.enable = true;
   networking.firewall.enable = true;
   system.stateVersion = "26.05";

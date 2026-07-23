@@ -1,7 +1,7 @@
 {
   lib,
   stdenv,
-  autovirt,
+  AutoVirt,
   makeWrapper,
   python3,
   pciutils,
@@ -13,7 +13,7 @@
 }:
 
 stdenv.mkDerivation {
-  pname = "barely-metal-utils";
+  pname = "nixvirt-utils";
   version = "1.0.0";
 
   dontUnpack = true;
@@ -31,15 +31,15 @@ stdenv.mkDerivation {
   ];
 
   installPhase = ''
-    mkdir -p $out/bin $out/share/barely-metal/scripts
+    mkdir -p $out/bin $out/share/nixvirt/scripts
 
-    cp ${autovirt}/resources/scripts/Linux/evdev-auto.sh $out/share/barely-metal/scripts/
-    cp ${autovirt}/resources/scripts/Linux/vbios-dumper.sh $out/share/barely-metal/scripts/
+    cp ${AutoVirt}/resources/scripts/Linux/evdev-auto.sh $out/share/nixvirt/scripts/
+    cp ${AutoVirt}/resources/scripts/Linux/vbios-dumper.sh $out/share/nixvirt/scripts/
 
-    chmod +x $out/share/barely-metal/scripts/*.sh
+    chmod +x $out/share/nixvirt/scripts/*.sh
 
     # evdev-auto: prints XML snippets for evdev input passthrough
-    makeWrapper $out/share/barely-metal/scripts/evdev-auto.sh $out/bin/barely-metal-evdev \
+    makeWrapper $out/share/nixvirt/scripts/evdev-auto.sh $out/bin/nixvirt-evdev \
       --prefix PATH : ${
         lib.makeBinPath [
           coreutils
@@ -50,7 +50,7 @@ stdenv.mkDerivation {
       }
 
     # vbios-dumper: dumps GPU VBIOS ROM
-    makeWrapper $out/share/barely-metal/scripts/vbios-dumper.sh $out/bin/barely-metal-vbios-dumper \
+    makeWrapper $out/share/nixvirt/scripts/vbios-dumper.sh $out/bin/nixvirt-vbios-dumper \
       --prefix PATH : ${
         lib.makeBinPath [
           coreutils
@@ -61,7 +61,7 @@ stdenv.mkDerivation {
   '';
 
   meta = {
-    description = "BarelyMetal utility scripts for VM anti-detection";
+    description = "nixvirt scripts";
     license = lib.licenses.mit;
     platforms = [ "x86_64-linux" ];
   };

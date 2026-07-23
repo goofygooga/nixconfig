@@ -1,12 +1,12 @@
 {
   self,
-  autovirt,
+  AutoVirt,
 }:
 
 {
   imports = [
     (import ./vm.nix {
-      inherit self autovirt;
+      inherit self AutoVirt;
     })
   ];
 }

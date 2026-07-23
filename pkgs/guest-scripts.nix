@@ -1,34 +1,33 @@
 {
   lib,
   stdenv,
-  autovirt,
+  AutoVirt,
 }:
 
 stdenv.mkDerivation {
-  pname = "barely-metal-guest-scripts";
+  pname = "nixvirt-guest-scripts";
   version = "1.0.0";
 
   dontUnpack = true;
   dontBuild = true;
 
   installPhase = ''
-    mkdir -p $out/share/barely-metal/guest-scripts/windows
-    mkdir -p $out/share/barely-metal/acpi
+    mkdir -p $out/share/nixvirt/guest-scripts/windows
+    mkdir -p $out/share/nixvirt/acpi
 
     # Windows guest anti-detection scripts
-    cp ${autovirt}/resources/scripts/Windows/EDID_OVERRIDE.ps1 $out/share/barely-metal/guest-scripts/windows/
-    cp ${autovirt}/resources/scripts/Windows/qemu-cleanup.ps1 $out/share/barely-metal/guest-scripts/windows/
+    cp ${AutoVirt}/resources/scripts/Windows/EDID_OVERRIDE.ps1 $out/share/nixvirt/guest-scripts/windows/
+    cp ${AutoVirt}/resources/scripts/Windows/qemu-cleanup.ps1 $out/share/nixvirt/guest-scripts/windows/
 
     # Bundled ACPI tables
-    cp ${autovirt}/patches/QEMU/fake_battery.dsl $out/share/barely-metal/acpi/
-    cp ${autovirt}/patches/QEMU/spoofed_devices.dsl $out/share/barely-metal/acpi/
-    if [ -f ${autovirt}/patches/QEMU/spoofed_devices.aml ]; then
-      cp ${autovirt}/patches/QEMU/spoofed_devices.aml $out/share/barely-metal/acpi/
+    cp ${AutoVirt}/patches/QEMU/spoofed_devices.dsl $out/share/nixvirt/acpi/
+    if [ -f ${AutoVirt}/patches/QEMU/spoofed_devices.aml ]; then
+      cp ${AutoVirt}/patches/QEMU/spoofed_devices.aml $out/share/nixvirt/acpi/
     fi
   '';
 
   meta = {
-    description = "BarelyMetal guest scripts and ACPI tables for anti-detection";
+    description = "nixvirt guest scripts and ACPI tables for anti-detection";
     license = lib.licenses.mit;
     platforms = [ "x86_64-linux" ];
   };
