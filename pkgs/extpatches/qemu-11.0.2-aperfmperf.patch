@@ -1,0 +1,109 @@
+diff --git a/target/i386/cpu.c b/target/i386/cpu.c
+index 9d12660..53832b8 100644
+--- a/target/i386/cpu.c
++++ b/target/i386/cpu.c
+@@ -1005,6 +1005,7 @@ void x86_cpu_vendor_words2str(char *dst, uint32_t vendor1,
+ #define TCG_7_2_EDX_FEATURES 0
+ #define TCG_APM_FEATURES 0
+ #define TCG_6_EAX_FEATURES CPUID_6_EAX_ARAT
++#define TCG_6_ECX_FEATURES 0
+ #define TCG_XSAVE_FEATURES (CPUID_XSAVE_XSAVEOPT | CPUID_XSAVE_XGETBV1)
+           /* missing:
+           CPUID_XSAVE_XSAVEC, CPUID_XSAVE_XSAVES */
+@@ -1541,6 +1542,21 @@ FeatureWordInfo feature_word_info[FEATURE_WORDS] = {
+         .cpuid = { .eax = 6, .reg = R_EAX, },
+         .tcg_features = TCG_6_EAX_FEATURES,
+     },
++    [FEAT_6_ECX] = {
++        .type = CPUID_FEATURE_WORD,
++        .feat_names = {
++            "aperfmperf", NULL, NULL, NULL,
++            NULL, NULL, NULL, NULL,
++            NULL, NULL, NULL, NULL,
++            NULL, NULL, NULL, NULL,
++            NULL, NULL, NULL, NULL,
++            NULL, NULL, NULL, NULL,
++            NULL, NULL, NULL, NULL,
++            NULL, NULL, NULL, NULL,
++        },
++        .cpuid = { .eax = 6, .reg = R_ECX, },
++        .tcg_features = TCG_6_ECX_FEATURES,
++    },
+     [FEAT_XSAVE_XCR0_LO] = {
+         .type = CPUID_FEATURE_WORD,
+         .cpuid = {
+@@ -8610,7 +8626,7 @@ void cpu_x86_cpuid(CPUX86State *env, uint32_t index, uint32_t count,
+         /* Thermal and Power Leaf */
+         *eax = env->features[FEAT_6_EAX];
+         *ebx = 0;
+-        *ecx = 0;
++        *ecx = env->features[FEAT_6_ECX];
+         *edx = 0;
+         break;
+     case 7:
+@@ -9641,6 +9657,7 @@ void x86_cpu_expand_features(X86CPU *cpu, Error **errp)
+     x86_cpu_adjust_feat_level(cpu, FEAT_1_EDX);
+     x86_cpu_adjust_feat_level(cpu, FEAT_1_ECX);
+     x86_cpu_adjust_feat_level(cpu, FEAT_6_EAX);
++    x86_cpu_adjust_feat_level(cpu, FEAT_6_ECX);
+     x86_cpu_adjust_feat_level(cpu, FEAT_7_0_ECX);
+     x86_cpu_adjust_feat_level(cpu, FEAT_7_1_EAX);
+     x86_cpu_adjust_feat_level(cpu, FEAT_7_1_ECX);
+@@ -10648,7 +10665,7 @@ static const Property x86_cpu_properties[] = {
+     DEFINE_PROP_BOOL("lmce", X86CPU, enable_lmce, false),
+     DEFINE_PROP_BOOL("l3-cache", X86CPU, enable_l3_cache, true),
+     DEFINE_PROP_BOOL("kvm-pv-enforce-cpuid", X86CPU, kvm_pv_enforce_cpuid,
+-                     false),
++                     true), // Forces #GP fault on unsupported RDMSR/WRMSR for KVM paravirtual MSRs (0x4b564d00–0x4b564d08)
+     DEFINE_PROP_BOOL("vmware-cpuid-freq", X86CPU, vmware_cpuid_freq, true),
+     DEFINE_PROP_BOOL("tcg-cpuid", X86CPU, expose_tcg, true),
+     DEFINE_PROP_BOOL("x-migrate-smi-count", X86CPU, migrate_smi_count,
+diff --git a/target/i386/cpu.h b/target/i386/cpu.h
+index 0b53915..329e122 100644
+--- a/target/i386/cpu.h
++++ b/target/i386/cpu.h
+@@ -698,6 +698,7 @@ typedef enum FeatureWord {
+     FEAT_SVM,           /* CPUID[8000_000A].EDX */
+     FEAT_XSAVE,         /* CPUID[EAX=0xd,ECX=1].EAX */
+     FEAT_6_EAX,         /* CPUID[6].EAX */
++    FEAT_6_ECX,         /* CPUID[6].ECX */
+     FEAT_XSAVE_XCR0_LO, /* CPUID[EAX=0xd,ECX=0].EAX */
+     FEAT_XSAVE_XCR0_HI, /* CPUID[EAX=0xd,ECX=0].EDX */
+     FEAT_ARCH_CAPABILITIES,
+@@ -1229,6 +1230,7 @@ uint64_t x86_cpu_get_supported_feature_word(X86CPU *cpu, FeatureWord w);
+ #define CPUID_XSAVE_XFD        (1U << 4)
+ 
+ #define CPUID_6_EAX_ARAT       (1U << 2)
++#define CPUID_6_ECX_APERFMPERF (1U << 0)
+ 
+ /* CPUID[0x80000007].EDX flags: */
+ #define CPUID_APM_INVTSC       (1U << 8)
+diff --git a/target/i386/kvm/kvm.c b/target/i386/kvm/kvm.c
+index 9e35288..b457e23 100644
+--- a/target/i386/kvm/kvm.c
++++ b/target/i386/kvm/kvm.c
+@@ -498,6 +498,14 @@ uint32_t kvm_arch_get_supported_cpuid(KVMState *s, uint32_t function,
+         }
+     } else if (function == 6 && reg == R_EAX) {
+         ret |= CPUID_6_EAX_ARAT; /* safe to allow because of emulated APIC */
++    } else if (function == 6 && reg == R_ECX) {
++        if (enable_cpu_pm) {
++            int disable_exits = kvm_check_extension(s,
++                                                    KVM_CAP_X86_DISABLE_EXITS);
++            if (disable_exits & KVM_X86_DISABLE_EXITS_APERFMPERF) {
++                ret |= CPUID_6_ECX_APERFMPERF;
++            }
++        }
+     } else if (function == 7 && index == 0 && reg == R_EBX) {
+         /* Not new instructions, just an optimization.  */
+         uint32_t ebx;
+@@ -3291,7 +3299,8 @@ static int kvm_vm_enable_disable_exits(KVMState *s)
+         disable_exits &= (KVM_X86_DISABLE_EXITS_MWAIT |
+                           KVM_X86_DISABLE_EXITS_HLT |
+                           KVM_X86_DISABLE_EXITS_PAUSE |
+-                          KVM_X86_DISABLE_EXITS_CSTATE);
++                          KVM_X86_DISABLE_EXITS_CSTATE |
++                          KVM_X86_DISABLE_EXITS_APERFMPERF);
+     }
+ 
+     return kvm_vm_enable_cap(s, KVM_CAP_X86_DISABLE_EXITS, 0,

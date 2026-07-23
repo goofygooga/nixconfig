@@ -11,5 +11,4 @@
   ];
   programs.virt-manager.enable = true;
   virtualisation.libvirtd.enable = true;
-  powerManagement.cpuFreqGovernor = "performance";
 }

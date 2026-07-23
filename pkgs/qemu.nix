@@ -121,6 +121,7 @@ in
       "--enable-spice"
       "--enable-spice-protocol"
       "--disable-werror"
+      "--disable-docs"
     ];
     src = fetchurl {
       url = "https://download.qemu.org/qemu-${version}.tar.xz";
@@ -222,6 +223,8 @@ in
         done
       ''}
     '';
+    outputs = [ "out" ];
+
 
     postInstall = (old.postInstall or "") + ''
       ln -sf $out/bin/qemu-system-x86_64 $out/bin/qemu-kvm

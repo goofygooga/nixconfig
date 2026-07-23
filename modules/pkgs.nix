@@ -56,6 +56,9 @@
     xwayland-satellite
     linux-wallpaperengine
     inputs.noctalia.packages.${pkgs.stdenv.hostPlatform.system}.default
+    kdePackages.kio
+kdePackages.plasma-integration
+kdePackages.kservice
   ];
   programs.gamemode.enable = true;
 
