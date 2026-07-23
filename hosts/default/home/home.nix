@@ -95,6 +95,7 @@
   programs.neovim.plugins = [
     pkgs.vimPlugins.LazyVim
   ];
+  programs.git-credential-oauth.enable = true;
   programs.git = {
     enable = true;
     userName = "Scorcher";
@@ -102,7 +103,7 @@
 
     settings = {
       credential.helper = "manager";
-      credential.credentialStore = "secretservice";
+      credential.credentialStore =  "${pkgs.git.override { withLibsecret = true; }}/bin/git-credential-libsecret";
     };
   };
   programs.fastfetch = {

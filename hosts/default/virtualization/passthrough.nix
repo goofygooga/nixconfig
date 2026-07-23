@@ -71,27 +71,28 @@ let
         fi
   '';
   hugepagesHook = pkgs.writeShellScript "hugepagesHook" ''
-        #!/usr/bin/env bash
-        set -x
-        VM="$1"
-        OP="$2"
-        PHASE="$3"
+  #!/usr/bin/env bash
+  set -x
+  VM="$1"
+  OP="$2"
+  PHASE="$3"
 
-        # change to your VM name
-        TARGET_VM="BarelyMetal"
-        if [ "$VM" = "$TARGET_VM" ] && [ "$OP" = "prepare" ] && [ "$PHASE" = "begin" ]; then
-            echo "Hugepages hook incoming!"
-            
-            sync && echo 3 | tee /proc/sys/vm/drop_caches
-            sysctl vm.compact_memory=1
-            echo 1 | tee /proc/sys/vm/compact_memory
-    	sysctl vm.nr_hugepages=6912
-          fi
-        if [ "$VM" = "$TARGET_VM" ] && [ "$OP" = "release" ] && [ "$PHASE" = "end" ]; then
-            echo "Releasing hugepages back to host"
-            sysctl vm.nr_hugepages=0
-          fi
-  '';
+  TARGET_VM="BarelyMetal"
+  
+  if [ "$VM" = "$TARGET_VM" ] && [ "$OP" = "prepare" ] && [ "$PHASE" = "begin" ]; then
+      echo "Hugepages hook incoming!"
+      sync && echo 3 | ${pkgs.coreutils}/bin/tee /proc/sys/vm/drop_caches
+      ${pkgs.procps}/bin/sysctl vm.compact_memory=1
+      echo 1 | ${pkgs.coreutils}/bin/tee /proc/sys/vm/compact_memory
+      ${pkgs.procps}/bin/sysctl vm.nr_hugepages=6912
+  fi
+
+  if [ "$VM" = "$TARGET_VM" ] && [ "$OP" = "release" ] && [ "$PHASE" = "end" ]; then
+      echo "Releasing hugepages back to host"
+      ${pkgs.procps}/bin/sysctl vm.nr_hugepages=0
+  fi
+'';
+
 in
 {
   virtualisation.libvirtd.hooks.qemu = {
