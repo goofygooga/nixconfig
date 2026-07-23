@@ -121,6 +121,10 @@ in
       "--enable-spice"
       "--enable-spice-protocol"
       "--disable-werror"
+      "--disable-docs"
+    ];
+    mesonFlags = (old.mesonFlags or [ ]) ++ [
+      "-Ddocs=disabled"
     ];
     src = fetchurl {
       url = "https://download.qemu.org/qemu-${version}.tar.xz";
@@ -223,11 +227,10 @@ in
       ''}
     '';
 
-
     postInstall = (old.postInstall or "") + ''
       ln -sf $out/bin/qemu-system-x86_64 $out/bin/qemu-kvm
     '';
-
+    outputs = [ "out" "ga" ];
     meta = (old.meta or { }) // {
       description = "QEMU patched type shi";
       mainProgram = "qemu-system-x86_64";
